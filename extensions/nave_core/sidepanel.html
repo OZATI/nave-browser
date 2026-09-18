@@ -4,19 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nave Barra Lateral</title>
+
+  <!-- Tipografia Oficial do App: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg: #090a0f;
-      --bg-surface: #12151f;
-      --bg-card: rgba(22, 27, 40, 0.7);
-      --border: rgba(255, 255, 255, 0.08);
-      --border-focus: rgba(16, 185, 129, 0.4);
-      --emerald: #10b981;
-      --cyan: #06b6d4;
-      --text: #f3f4f6;
-      --text-muted: #9ca3af;
-      --text-dim: #6b7280;
-      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --bg: #000000;
+      --bg-surface: #0a0a0a;
+      --bg-card: #111111;
+      --border: #222222;
+      --border-subtle: #161616;
+      --border-hover: #444444;
+      --text: #ffffff;
+      --text-muted: #888888;
+      --text-dim: #555555;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
     *, *::before, *::after {
@@ -28,13 +34,15 @@
     body {
       background-color: var(--bg);
       color: var(--text);
-      font-family: var(--font);
+      font-family: var(--font-sans);
       padding: 16px;
       user-select: none;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       gap: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     /* Header */
@@ -52,15 +60,15 @@
       gap: 8px;
     }
 
-    .brand img {
-      width: 22px;
-      height: 22px;
+    .brand svg {
+      width: 20px;
+      height: 20px;
     }
 
     .brand-name {
-      font-size: 0.95rem;
-      font-weight: 800;
-      letter-spacing: 0.04em;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
       color: #fff;
     }
 
@@ -68,43 +76,40 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      background: rgba(16, 185, 129, 0.1);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--emerald);
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--text-muted);
     }
 
     .dot {
-      width: 6px;
-      height: 6px;
+      width: 5px;
+      height: 5px;
       border-radius: 50%;
-      background: var(--emerald);
-      box-shadow: 0 0 6px var(--emerald);
+      background: #ffffff;
     }
 
-    /* Google Search Box */
+    /* Busca Rápida Google */
     .search-box {
       display: flex;
       align-items: center;
       background: var(--bg-surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 8px 14px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.3);
-      transition: all 0.2s ease;
+      border-radius: 6px;
+      padding: 8px 12px;
+      transition: border-color 0.2s ease;
     }
 
     .search-box:focus-within {
-      border-color: var(--emerald);
-      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+      border-color: #666666;
     }
 
     .search-box svg {
-      width: 18px;
-      height: 18px;
+      width: 16px;
+      height: 16px;
       color: var(--text-dim);
       margin-right: 10px;
       flex-shrink: 0;
@@ -116,7 +121,7 @@
       border: none;
       outline: none;
       color: #fff;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-family: inherit;
     }
 
@@ -124,12 +129,12 @@
       color: var(--text-dim);
     }
 
-    /* Seções */
     .section-title {
-      font-size: 0.75rem;
-      font-weight: 700;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      font-weight: 500;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       color: var(--text-dim);
       margin-bottom: 8px;
     }
@@ -138,34 +143,33 @@
     .apps-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
+      gap: 8px;
     }
 
     .app-card {
       display: flex;
       align-items: center;
-      gap: 10px;
-      background: var(--bg-card);
+      gap: 8px;
+      background: var(--bg-surface);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
+      border-radius: 6px;
+      padding: 8px 10px;
       text-decoration: none;
       color: var(--text);
-      transition: all 0.18s ease;
+      transition: all 0.15s ease;
     }
 
     .app-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--emerald);
-      background: rgba(26, 32, 48, 0.9);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      border-color: var(--border-hover);
+      background: #141414;
+      transform: translateY(-1px);
     }
 
     .app-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      background: var(--bg-surface);
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      background: #111;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -173,8 +177,8 @@
     }
 
     .app-icon svg {
-      width: 18px;
-      height: 18px;
+      width: 15px;
+      height: 15px;
     }
 
     .app-info {
@@ -182,26 +186,26 @@
     }
 
     .app-name {
-      font-size: 0.82rem;
-      font-weight: 700;
+      font-size: 0.8rem;
+      font-weight: 600;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
     .app-desc {
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       color: var(--text-dim);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    /* Bloco de Notas Rápido Lateral */
+    /* Bloco de Notas Lateral */
     .notepad-card {
-      background: var(--bg-card);
+      background: var(--bg-surface);
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 6px;
       padding: 12px;
       display: flex;
       flex-direction: column;
@@ -212,12 +216,12 @@
     .notepad-textarea {
       width: 100%;
       height: 140px;
-      background: var(--bg-surface);
+      background: #000;
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 4px;
       padding: 10px;
       color: #fff;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       font-family: inherit;
       resize: none;
       outline: none;
@@ -225,33 +229,38 @@
     }
 
     .notepad-textarea:focus {
-      border-color: var(--emerald);
+      border-color: #555;
     }
 
     .notepad-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--text-dim);
     }
 
     /* Footer */
     .sidebar-footer {
       margin-top: auto;
-      padding-top: 12px;
-      border-top: 1px solid var(--border);
+      padding-top: 10px;
+      border-top: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       color: var(--text-dim);
     }
 
     .sidebar-footer a {
-      color: var(--emerald);
+      color: var(--text-muted);
       text-decoration: none;
-      font-weight: 600;
+      font-weight: 500;
+      transition: color 0.15s ease;
+    }
+
+    .sidebar-footer a:hover {
+      color: #fff;
     }
   </style>
 </head>
@@ -260,20 +269,22 @@
   <!-- Header -->
   <div class="header">
     <div class="brand">
-      <img src="icons/nave-32.png" alt="Nave">
-      <span class="brand-name">Nave Lateral</span>
+      <svg viewBox="0 0 100 100" fill="none">
+        <circle cx="50" cy="50" r="38" stroke="#ffffff" stroke-width="12" />
+      </svg>
+      <span class="brand-name">ozati™ / lateral</span>
     </div>
     <div class="shield-status">
       <span class="dot"></span>
-      Shield Ativo
+      Nave Shield
     </div>
   </div>
 
-  <!-- Busca Rápida Google -->
+  <!-- Busca Google -->
   <div>
-    <div class="section-title">Busca Rápida Google</div>
+    <div class="section-title">Busca Instantânea</div>
     <form id="googleSearchForm" class="search-box">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
@@ -286,9 +297,9 @@
     </form>
   </div>
 
-  <!-- Navegação de Apps e Hubs -->
+  <!-- Apps & Produtividade -->
   <div>
-    <div class="section-title">Navegação & Produtividade</div>
+    <div class="section-title">Acesso Rápido</div>
     <div class="apps-grid">
       <a href="https://www.google.com" target="_blank" class="app-card">
         <div class="app-icon">
@@ -296,17 +307,17 @@
         </div>
         <div class="app-info">
           <div class="app-name">Google</div>
-          <div class="app-desc">Pesquisa Web</div>
+          <div class="app-desc">Busca Web</div>
         </div>
       </a>
 
       <a href="https://gemini.google.com" target="_blank" class="app-card">
         <div class="app-icon">
-          <svg viewBox="0 0 24 24" fill="#1a73e8"><path d="M12 2L9.5 9.5 2 12l7.5 2.5L12 22l2.5-7.5L22 12l-7.5-2.5z"/></svg>
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2L9.5 9.5 2 12l7.5 2.5L12 22l2.5-7.5L22 12l-7.5-2.5z"/></svg>
         </div>
         <div class="app-info">
           <div class="app-name">Gemini</div>
-          <div class="app-desc">IA Google</div>
+          <div class="app-desc">Google AI</div>
         </div>
       </a>
 
@@ -332,7 +343,7 @@
 
       <a href="https://chatgpt.com" target="_blank" class="app-card">
         <div class="app-icon">
-          <svg viewBox="0 0 24 24" fill="#10a37f"><path d="M22.28 9.9a5.98 5.98 0 0 0-.48-4.68 6.04 6.04 0 0 0-6.62-2.73A6 6 0 0 0 10.4 1a6.04 6.04 0 0 0-5.74 4.19 6 6 0 0 0-4.14 3 6.04 6.04 0 0 0 .74 7.15 5.98 5.98 0 0 0 .48 4.68 6.04 6.04 0 0 0 6.62 2.73A6 6 0 0 0 13.6 23a6.04 6.04 0 0 0 5.74-4.19 6 6 0 0 0 4.14-3 6.04 6.04 0 0 0-.74-7.15z"/></svg>
+          <svg viewBox="0 0 24 24" fill="#fff"><path d="M22.28 9.9a5.98 5.98 0 0 0-.48-4.68 6.04 6.04 0 0 0-6.62-2.73A6 6 0 0 0 10.4 1a6.04 6.04 0 0 0-5.74 4.19 6 6 0 0 0-4.14 3 6.04 6.04 0 0 0 .74 7.15 5.98 5.98 0 0 0 .48 4.68 6.04 6.04 0 0 0 6.62 2.73A6 6 0 0 0 13.6 23a6.04 6.04 0 0 0 5.74-4.19 6 6 0 0 0 4.14-3 6.04 6.04 0 0 0-.74-7.15z"/></svg>
         </div>
         <div class="app-info">
           <div class="app-name">ChatGPT</div>
@@ -342,34 +353,33 @@
 
       <a href="https://nave.ozati.co" target="_blank" class="app-card">
         <div class="app-icon">
-          <svg viewBox="0 0 24 24" fill="#10b981"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="38" stroke="#ffffff" stroke-width="12"/></svg>
         </div>
         <div class="app-info">
           <div class="app-name">OZATI Hub</div>
-          <div class="app-desc">Ecossistema Nave</div>
+          <div class="app-desc">Portal Oficial</div>
         </div>
       </a>
     </div>
   </div>
 
-  <!-- Bloco de Anotações Rápido -->
+  <!-- Bloco de Notas Rápido -->
   <div class="notepad-card">
-    <div class="section-title" style="margin-bottom: 4px;">Bloco de Notas Rápido</div>
-    <textarea id="quickNotes" class="notepad-textarea" placeholder="Digite notas ou rascunhos rápidos aqui... (salvo automaticamente)"></textarea>
+    <div class="section-title">Bloco de Notas Local</div>
+    <textarea id="quickNotes" class="notepad-textarea" placeholder="Notas e rascunhos temporários salvos no seu disco..."></textarea>
     <div class="notepad-footer">
-      <span>Auto-salvo local</span>
-      <span id="noteCharCount">0 caracteres</span>
+      <span>Armazenamento local</span>
+      <span id="noteCharCount">0 carac.</span>
     </div>
   </div>
 
   <!-- Footer -->
   <div class="sidebar-footer">
-    <span>Nave Browser • Ultra Rápido</span>
+    <span>Nave Browser</span>
     <a href="https://nave.ozati.co" target="_blank">nave.ozati.co</a>
   </div>
 
   <script>
-    // Busca Google
     const searchForm = document.getElementById('googleSearchForm');
     const searchInput = document.getElementById('googleQuery');
 
@@ -387,16 +397,15 @@
       }
     });
 
-    // Bloco de Notas Local
     const notesEl = document.getElementById('quickNotes');
     const charCount = document.getElementById('noteCharCount');
 
     notesEl.value = localStorage.getItem('nave_side_notes') || '';
-    charCount.textContent = notesEl.value.length + ' caracteres';
+    charCount.textContent = notesEl.value.length + ' carac.';
 
     notesEl.addEventListener('input', () => {
       localStorage.setItem('nave_side_notes', notesEl.value);
-      charCount.textContent = notesEl.value.length + ' caracteres';
+      charCount.textContent = notesEl.value.length + ' carac.';
     });
   </script>
 </body>

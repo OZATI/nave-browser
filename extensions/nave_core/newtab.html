@@ -5,19 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nave</title>
   <link rel="icon" type="image/png" href="icons/nave-32.png">
+  
+  <!-- Tipografia Oficial do App: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg: #08090d;
-      --bg-surface: #0f121a;
-      --bg-card: rgba(18, 22, 33, 0.7);
-      --border: rgba(255, 255, 255, 0.08);
-      --border-focus: rgba(16, 185, 129, 0.4);
-      --emerald: #10b981;
-      --cyan: #06b6d4;
-      --text: #f3f4f6;
-      --text-muted: #9ca3af;
-      --text-dim: #6b7280;
-      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --bg: #000000;
+      --bg-surface: #0a0a0a;
+      --bg-card: #111111;
+      --border: #222222;
+      --border-subtle: #181818;
+      --border-hover: #444444;
+      --text: #ffffff;
+      --text-muted: #888888;
+      --text-dim: #555555;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
     *, *::before, *::after {
@@ -29,40 +35,25 @@
     body {
       background-color: var(--bg);
       color: var(--text);
-      font-family: var(--font);
+      font-family: var(--font-sans);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: space-between;
-      overflow-x: hidden;
       user-select: none;
-      padding: 24px 32px;
-      position: relative;
-    }
-
-    /* Fundo sutil sem peso gráfico */
-    .ambient-glow {
-      position: fixed;
-      top: -200px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 700px;
-      height: 450px;
-      background: radial-gradient(ellipse at center, rgba(16, 185, 129, 0.12) 0%, rgba(6, 182, 212, 0.04) 45%, transparent 70%);
-      filter: blur(80px);
-      pointer-events: none;
-      z-index: 0;
+      padding: 24px 36px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     /* Top Bar */
     header {
       width: 100%;
-      max-width: 1100px;
+      max-width: 1200px;
+      margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      z-index: 10;
     }
 
     .brand {
@@ -73,16 +64,24 @@
       color: inherit;
     }
 
-    .brand img {
+    .brand svg {
       width: 26px;
       height: 26px;
     }
 
     .brand-title {
-      font-size: 1.05rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
       color: #fff;
+    }
+
+    .brand-sub {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
     }
 
     .shield-badge {
@@ -92,100 +91,61 @@
       background: var(--bg-surface);
       border: 1px solid var(--border);
       padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 600;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 500;
       color: var(--text-muted);
     }
 
     .pulse-dot {
-      width: 8px;
-      height: 8px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
-      background: var(--emerald);
-      box-shadow: 0 0 8px var(--emerald);
+      background: #ffffff;
     }
 
     /* Centro */
     main {
       width: 100%;
-      max-width: 760px;
+      max-width: 780px;
+      margin: auto;
       display: flex;
       flex-direction: column;
       align-items: center;
-      z-index: 10;
-      margin: auto 0;
+      text-align: center;
     }
 
-    /* Relógio Minimalista */
+    /* Relógio em Inter */
     .clock-container {
-      text-align: center;
       margin-bottom: 24px;
     }
 
     .clock {
-      font-size: 4.8rem;
-      font-weight: 800;
+      font-size: 5rem;
+      font-weight: 700;
       letter-spacing: -0.04em;
       line-height: 1;
       color: #ffffff;
-      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
     }
 
     .date-text {
       font-size: 0.95rem;
       color: var(--text-muted);
-      margin-top: 6px;
-      font-weight: 500;
-    }
-
-    /* Barra de Estatísticas Estilo Brave */
-    .stats-bar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 24px;
-      margin-bottom: 32px;
-      padding: 10px 24px;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      backdrop-filter: blur(12px);
-    }
-
-    .stat-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .stat-val {
-      font-weight: 800;
-      font-size: 0.95rem;
-      color: #fff;
-    }
-
-    .stat-val.emerald { color: var(--emerald); }
-    .stat-val.cyan { color: var(--cyan); }
-
-    .stat-sep {
-      width: 1px;
-      height: 14px;
-      background: var(--border);
+      margin-top: 8px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
     }
 
     /* Barra de Pesquisa */
     .search-container {
       width: 100%;
-      margin-bottom: 32px;
+      margin-bottom: 36px;
     }
 
     .search-engines {
       display: flex;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       margin-bottom: 12px;
     }
 
@@ -193,12 +153,13 @@
       background: transparent;
       border: 1px solid transparent;
       color: var(--text-dim);
-      font-size: 0.78rem;
-      font-weight: 600;
+      font-size: 0.76rem;
+      font-weight: 500;
       padding: 4px 12px;
-      border-radius: 999px;
+      border-radius: 4px;
       cursor: pointer;
       transition: all 0.15s ease;
+      font-family: inherit;
     }
 
     .engine-tab:hover {
@@ -208,7 +169,8 @@
     .engine-tab.active {
       background: var(--bg-surface);
       border-color: var(--border);
-      color: var(--emerald);
+      color: #ffffff;
+      font-weight: 600;
     }
 
     .search-bar {
@@ -216,22 +178,20 @@
       align-items: center;
       background: var(--bg-surface);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 12px 20px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-      transition: all 0.2s ease;
+      border-radius: 6px;
+      padding: 12px 18px;
+      transition: border-color 0.2s ease;
     }
 
     .search-bar:focus-within {
-      border-color: var(--emerald);
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18), 0 10px 35px rgba(0, 0, 0, 0.5);
+      border-color: #666666;
     }
 
     .search-bar svg {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       color: var(--text-dim);
-      margin-right: 14px;
+      margin-right: 12px;
       flex-shrink: 0;
     }
 
@@ -240,7 +200,7 @@
       background: transparent;
       border: none;
       outline: none;
-      font-size: 1.05rem;
+      font-size: 0.98rem;
       color: #fff;
       font-family: inherit;
     }
@@ -249,11 +209,11 @@
       color: var(--text-dim);
     }
 
-    /* Grade de Atalhos (Speed Dial) */
+    /* Grade de Atalhos */
     .shortcuts-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+      gap: 12px;
       width: 100%;
     }
 
@@ -262,29 +222,28 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: var(--bg-card);
+      background: var(--bg-surface);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px 8px 10px;
+      border-radius: 6px;
+      padding: 12px 6px 10px;
       text-decoration: none;
       color: var(--text);
-      transition: all 0.18s ease;
+      transition: all 0.15s ease;
       cursor: pointer;
     }
 
     .shortcut:hover {
-      transform: translateY(-3px);
-      border-color: var(--border-focus);
-      background: rgba(25, 30, 45, 0.8);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      border-color: var(--border-hover);
+      background: #141414;
+      transform: translateY(-1px);
     }
 
     .shortcut-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      background: #111;
+      border: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -292,41 +251,32 @@
     }
 
     .shortcut-icon svg {
-      width: 22px;
-      height: 22px;
+      width: 18px;
+      height: 18px;
     }
 
     .shortcut-title {
-      font-size: 0.76rem;
-      font-weight: 600;
+      font-size: 0.72rem;
+      font-weight: 500;
       color: var(--text-muted);
-      max-width: 80px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      text-align: center;
-    }
-
-    .btn-add {
-      border-style: dashed;
-      color: var(--text-dim);
-    }
-
-    .btn-add:hover {
-      border-color: var(--emerald);
-      color: var(--emerald);
+      max-width: 72px;
     }
 
     /* Footer */
     footer {
       width: 100%;
-      max-width: 1100px;
+      max-width: 1200px;
+      margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 0.75rem;
       color: var(--text-dim);
-      z-index: 10;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 16px;
     }
 
     .footer-left {
@@ -334,210 +284,91 @@
       gap: 16px;
     }
 
-    .footer-badge span {
-      color: var(--emerald);
+    .footer-badge {
+      font-family: var(--font-mono);
     }
 
     .footer-right a {
       color: var(--text-dim);
       text-decoration: none;
-      transition: color 0.15s;
+      transition: color 0.15s ease;
     }
 
     .footer-right a:hover {
-      color: var(--emerald);
-    }
-
-    /* Modal Simples */
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(6px);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal.active { display: flex; }
-
-    .modal-box {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 22px;
-      width: 100%;
-      max-width: 360px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
-    }
-
-    .modal-box h3 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 14px;
-      color: #fff;
-    }
-
-    .form-group {
-      margin-bottom: 12px;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-    }
-
-    .form-group input {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 9px 12px;
-      color: #fff;
-      font-family: inherit;
-      font-size: 0.88rem;
-      outline: none;
-    }
-
-    .form-group input:focus {
-      border-color: var(--emerald);
-    }
-
-    .modal-btns {
-      display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-top: 18px;
-    }
-
-    .btn-cancel {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 7px 14px;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      cursor: pointer;
-    }
-
-    .btn-save {
-      background: var(--emerald);
-      color: #08090d;
-      border: none;
-      font-weight: 700;
-      padding: 7px 16px;
-      border-radius: 8px;
-      font-size: 0.8rem;
-      cursor: pointer;
+      color: var(--text);
     }
   </style>
 </head>
 <body>
-  <div class="ambient-glow"></div>
 
+  <!-- Top Bar -->
   <header>
-    <a href="https://nave.ozati.co" class="brand" target="_blank" rel="noopener">
-      <img src="icons/nave-32.png" alt="Nave">
-      <span class="brand-title">NAVE</span>
+    <a href="https://nave.ozati.co" target="_blank" class="brand">
+      <svg viewBox="0 0 100 100" fill="none">
+        <circle cx="50" cy="50" r="38" stroke="#ffffff" stroke-width="12" />
+      </svg>
+      <div>
+        <span class="brand-title">ozati™</span>
+        <span class="brand-sub">/ nave</span>
+      </div>
     </a>
 
     <div class="shield-badge">
       <span class="pulse-dot"></span>
-      <span>Nave Shield: Ativo</span>
+      <span>Nave Shield Ativo</span>
     </div>
   </header>
 
+  <!-- Centro -->
   <main>
     <div class="clock-container">
       <div class="clock" id="clock">12:00</div>
       <div class="date-text" id="dateText">Sexta-feira, 18 de Setembro</div>
     </div>
 
-    <!-- Stats Estilo Brave -->
-    <div class="stats-bar">
-      <div class="stat-item">
-        <span>🛡️</span>
-        <span class="stat-val emerald" id="statTrackers">142</span>
-        <span>rastreadores bloqueados</span>
-      </div>
-      <div class="stat-sep"></div>
-      <div class="stat-item">
-        <span>⚡</span>
-        <span class="stat-val cyan" id="statBandwidth">45.2 MB</span>
-        <span>economizados</span>
-      </div>
-      <div class="stat-sep"></div>
-      <div class="stat-item">
-        <span>⏱️</span>
-        <span class="stat-val" id="statSpeed">3.8x</span>
-        <span>mais rápido</span>
-      </div>
-    </div>
-
-    <!-- Busca -->
+    <!-- Barra de Pesquisa Google Nativa -->
     <div class="search-container">
       <div class="search-engines">
         <button class="engine-tab active" data-engine="google">Google</button>
-        <button class="engine-tab" data-engine="brave">Brave Search</button>
+        <button class="engine-tab" data-engine="brave">Brave</button>
         <button class="engine-tab" data-engine="ddg">DuckDuckGo</button>
         <button class="engine-tab" data-engine="startpage">Startpage</button>
       </div>
 
       <form id="searchForm" class="search-bar">
-        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
         <input 
           type="text" 
           id="searchInput" 
           class="search-input" 
-          placeholder="Pesquisar na Web ou digitar endereço..." 
+          placeholder="Pesquisar com Google ou digitar link..." 
           autocomplete="off" 
           autofocus
         >
       </form>
     </div>
 
-    <!-- Atalhos Rápidos com SVGs Nítidos -->
+    <!-- Grade de Atalhos -->
     <div class="shortcuts-grid" id="shortcutsGrid"></div>
   </main>
 
-  <!-- Modal Adicionar Atalho -->
-  <div class="modal" id="modalAdd">
-    <div class="modal-box">
-      <h3>Novo Atalho</h3>
-      <div class="form-group">
-        <label for="inputTitle">Nome do Site</label>
-        <input type="text" id="inputTitle" placeholder="Ex: YouTube">
-      </div>
-      <div class="form-group">
-        <label for="inputUrl">Endereço (URL)</label>
-        <input type="url" id="inputUrl" placeholder="https://youtube.com">
-      </div>
-      <div class="modal-btns">
-        <button type="button" class="btn-cancel" id="btnCancel">Cancelar</button>
-        <button type="button" class="btn-save" id="btnSave">Adicionar</button>
-      </div>
-    </div>
-  </div>
-
+  <!-- Footer -->
   <footer>
     <div class="footer-left">
-      <div class="footer-badge"><span>●</span> GPU 120 FPS</div>
-      <div class="footer-badge"><span>●</span> Zero Telemetria</div>
-      <div class="footer-badge"><span>●</span> Proteção Anti-Rastreamento</div>
+      <div class="footer-badge">Chromium 151 Nativo</div>
+      <div class="footer-badge">120 FPS GPU</div>
+      <div class="footer-badge">Zero Telemetria</div>
     </div>
     <div class="footer-right">
-      <a href="https://nave.ozati.co" target="_blank" rel="noopener">nave.ozati.co</a>
+      <a href="https://nave.ozati.co" target="_blank">nave.ozati.co</a>
     </div>
   </footer>
 
   <script>
-    // Relógio e Data
+    // Relógio e Data em Inter
     function updateClock() {
       const now = new Date();
       const h = String(now.getHours()).padStart(2, '0');
@@ -551,18 +382,7 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Stats dinâmicos persistidos no localStorage
-    let trackers = parseInt(localStorage.getItem('nave_trackers') || '142');
-    let bandwidth = parseFloat(localStorage.getItem('nave_bandwidth') || '45.2');
-    trackers += Math.floor(Math.random() * 2) + 1;
-    bandwidth = (bandwidth + 0.2).toFixed(1);
-    localStorage.setItem('nave_trackers', trackers);
-    localStorage.setItem('nave_bandwidth', bandwidth);
-
-    document.getElementById('statTrackers').textContent = trackers;
-    document.getElementById('statBandwidth').textContent = bandwidth + ' MB';
-
-    // Motores de Busca (Google Padrão OZATI)
+    // Motores de Busca com Google como Padrão Oficial
     let currentEngine = localStorage.getItem('nave_engine') || 'google';
     const engines = {
       google: 'https://www.google.com/search?q=',
@@ -586,7 +406,7 @@
       });
     });
 
-    // Submissão rápida da Busca / URL direta
+    // Submissão Rápida da Busca
     document.getElementById('searchForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const val = document.getElementById('searchInput').value.trim();
@@ -601,23 +421,21 @@
       }
     });
 
-    // Ícones Vetoriais SVG Nativos para os Atalhos
+    // Atalhos Rápidos com SVGs Nítidos
     const iconsMap = {
       google: `<svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.65v3h3.88c2.27-2.09 3.66-5.17 3.66-9.09z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.1C3.28 21.43 7.37 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.32c-.25-.72-.38-1.49-.38-2.32s.13-1.6.38-2.32V6.58H1.25C.45 8.17 0 9.97 0 12s.45 3.83 1.25 5.42l4.03-3.1z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.37 0 3.28 2.57 1.25 6.58l4.03 3.1c.95-2.83 3.6-4.93 6.72-4.93z"/></svg>`,
-      ozati: `<svg viewBox="0 0 24 24" fill="#10b981"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`,
+      ozati: `<svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="38" stroke="#ffffff" stroke-width="12"/></svg>`,
       youtube: `<svg viewBox="0 0 24 24" fill="#ff0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`,
       github: `<svg viewBox="0 0 24 24" fill="#fff"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>`,
-      chatgpt: `<svg viewBox="0 0 24 24" fill="#10a37f"><path d="M22.28 9.9a5.98 5.98 0 0 0-.48-4.68 6.04 6.04 0 0 0-6.62-2.73A6 6 0 0 0 10.4 1a6.04 6.04 0 0 0-5.74 4.19 6 6 0 0 0-4.14 3 6.04 6.04 0 0 0 .74 7.15 5.98 5.98 0 0 0 .48 4.68 6.04 6.04 0 0 0 6.62 2.73A6 6 0 0 0 13.6 23a6.04 6.04 0 0 0 5.74-4.19 6 6 0 0 0 4.14-3 6.04 6.04 0 0 0-.74-7.15zM13.6 21.6a4.57 4.57 0 0 1-2.93-1.07l.15-.08 4.88-2.82a.76.76 0 0 0 .38-.66v-6.9l2.08 1.2a.74.74 0 0 1 .38.65v5.82a4.6 4.6 0 0 1-4.94 3.86zm-8.8-3.7a4.57 4.57 0 0 1-.55-3.07l.15.09 4.88 2.82a.75.75 0 0 0 .76 0l5.98-3.45v2.4a.75.75 0 0 1-.38.65l-5.04 2.91a4.6 4.6 0 0 1-5.84-2.35zm-1.87-8.3a4.57 4.57 0 0 1 2.38-2l-.01.17v5.63a.75.75 0 0 0 .38.66l5.98 3.45-2.08 1.2a.74.74 0 0 1-.76 0l-5.04-2.91a4.6 4.6 0 0 1-.85-6.2zm14.8 2.3l-5.98-3.45 2.08-1.2a.74.74 0 0 1 .76 0l5.04 2.91a4.6 4.6 0 0 1 .85 6.2 4.57 4.57 0 0 1-2.38 2v-5.8a.75.75 0 0 0-.37-.66zm2.42-3.83l-.15-.09-4.88-2.82a.75.75 0 0 0-.76 0L8.46 7.41V5.01a.75.75 0 0 1 .38-.65l5.04-2.91a4.6 4.6 0 0 1 5.84 2.35 4.57 4.57 0 0 1 .55 3.07zM10.74 9.17l2.86-1.65 2.86 1.65v3.3l-2.86 1.65-2.86-1.65z"/></svg>`,
+      chatgpt: `<svg viewBox="0 0 24 24" fill="#fff"><path d="M22.28 9.9a5.98 5.98 0 0 0-.48-4.68 6.04 6.04 0 0 0-6.62-2.73A6 6 0 0 0 10.4 1a6.04 6.04 0 0 0-5.74 4.19 6 6 0 0 0-4.14 3 6.04 6.04 0 0 0 .74 7.15 5.98 5.98 0 0 0 .48 4.68 6.04 6.04 0 0 0 6.62 2.73A6 6 0 0 0 13.6 23a6.04 6.04 0 0 0 5.74-4.19 6 6 0 0 0 4.14-3 6.04 6.04 0 0 0-.74-7.15z"/></svg>`,
       whatsapp: `<svg viewBox="0 0 24 24" fill="#25d366"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/></svg>`,
       gmail: `<svg viewBox="0 0 24 24" fill="#ea4335"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>`,
-      x: `<svg viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`,
-      reddit: `<svg viewBox="0 0 24 24" fill="#ff4500"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.56 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701z"/></svg>`,
-      generic: `<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`
+      x: `<svg viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`
     };
 
-    const defaultShortcuts = [
+    const shortcuts = [
       { id: 'google', title: 'Google', url: 'https://google.com' },
-      { id: 'ozati', title: 'Nave Web', url: 'https://nave.ozati.co' },
+      { id: 'ozati', title: 'OZATI Hub', url: 'https://nave.ozati.co' },
       { id: 'youtube', title: 'YouTube', url: 'https://youtube.com' },
       { id: 'github', title: 'GitHub', url: 'https://github.com' },
       { id: 'chatgpt', title: 'ChatGPT', url: 'https://chatgpt.com' },
@@ -626,68 +444,19 @@
       { id: 'x', title: 'X', url: 'https://x.com' }
     ];
 
-    let shortcuts = JSON.parse(localStorage.getItem('nave_shortcuts') || JSON.stringify(defaultShortcuts));
-
-    function renderShortcuts() {
-      const grid = document.getElementById('shortcutsGrid');
-      grid.innerHTML = '';
-
-      shortcuts.forEach(s => {
-        const a = document.createElement('a');
-        a.className = 'shortcut';
-        a.href = s.url;
-        const iconSvg = iconsMap[s.id] || iconsMap.generic;
-        a.innerHTML = `
-          <div class="shortcut-icon">${iconSvg}</div>
-          <div class="shortcut-title">${s.title}</div>
-        `;
-        grid.appendChild(a);
-      });
-
-      // Botão + Adicionar
-      const addBtn = document.createElement('div');
-      addBtn.className = 'shortcut btn-add';
-      addBtn.innerHTML = `
-        <div class="shortcut-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
-        <div class="shortcut-title">Adicionar</div>
+    const grid = document.getElementById('shortcutsGrid');
+    shortcuts.forEach(s => {
+      const a = document.createElement('a');
+      a.className = 'shortcut';
+      a.href = s.url;
+      a.innerHTML = `
+        <div class="shortcut-icon">${iconsMap[s.id]}</div>
+        <div class="shortcut-title">${s.title}</div>
       `;
-      addBtn.addEventListener('click', openModal);
-      grid.appendChild(addBtn);
-    }
-
-    renderShortcuts();
-
-    // Modal
-    const modal = document.getElementById('modalAdd');
-    function openModal() {
-      document.getElementById('inputTitle').value = '';
-      document.getElementById('inputUrl').value = '';
-      modal.classList.add('active');
-      document.getElementById('inputTitle').focus();
-    }
-    function closeModal() {
-      modal.classList.remove('active');
-    }
-
-    document.getElementById('btnCancel').addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-
-    document.getElementById('btnSave').addEventListener('click', () => {
-      const title = document.getElementById('inputTitle').value.trim();
-      let url = document.getElementById('inputUrl').value.trim();
-      if (!title || !url) return;
-
-      if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        url = 'https://' + url;
-      }
-
-      shortcuts.push({ id: 'generic', title, url });
-      localStorage.setItem('nave_shortcuts', JSON.stringify(shortcuts));
-      renderShortcuts();
-      closeModal();
+      grid.appendChild(a);
     });
 
-    // Auto-foco inteligente: qualquer tecla digitada foca na busca
+    // Auto-focus no input
     window.addEventListener('keydown', (e) => {
       const active = document.activeElement;
       if (active.tagName === 'INPUT') return;
