@@ -53,8 +53,10 @@ namespace NaveBrowser
                     extArg = " --load-extension=\"" + coreExt + "\"";
                 }
 
-                // 4. Flags de Performance Equivalentes e Superiores ao Brave
+                // 4. Flags de Performance Equivalentes e Superiores ao Brave + Identidade Nave
                 string launchArgs = "--user-data-dir=\"" + profileDir + "\" " +
+                    "--app-id=\"OZATI.Nave\" " +
+                    "--class=\"OZATI.Nave\" " +
                     "--enable-gpu-rasterization " +
                     "--enable-zero-copy " +
                     "--ignore-gpu-blocklist " +
