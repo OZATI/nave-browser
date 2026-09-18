@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -80,16 +80,17 @@
       pointer-events: none;
     }
 
-    /* Barra Superior Flutuante (Figma #5153:263) */
+    /* Barra Superior Flutuante Fixa e Sempre Visível */
     header.floating-top-bar {
-      position: fixed;
-      top: 16px;
-      left: 50%;
-      transform: translate(-50%, -140%);
-      opacity: 0;
-      pointer-events: none;
+      position: relative;
+      top: 0;
+      left: 0;
+      transform: none;
+      opacity: 1;
+      pointer-events: auto;
       width: min(1300px, calc(100vw - 48px));
       height: 56px;
+      margin: 0 auto 20px;
       background: var(--glass-bg);
       backdrop-filter: blur(28px);
       -webkit-backdrop-filter: blur(28px);
@@ -100,15 +101,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 0 24px;
-      z-index: 10000;
-      transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
-    }
-
-    /* Estado Ativo: Visível ao colocar o mouse na borda */
-    header.floating-top-bar.visible {
-      transform: translate(-50%, 0);
-      opacity: 1;
-      pointer-events: auto;
+      z-index: 1000;
     }
 
     .brand {
@@ -422,10 +415,11 @@
     </a>
 
     <div style="display: flex; align-items: center; gap: 12px;">
-      <a href="https://nave.ozati.co/#download" target="_blank" class="version-badge" title="Verificar atualizações do Nave">
-        <span>v1.0.2</span>
+      <a href="https://nave.ozati.co/#download" target="_blank" class="version-badge" title="Clique para verificar atualizações">
+        <span>🔄</span>
+        <span>v1.0.0</span>
         <span style="color: var(--text-dim);">•</span>
-        <span>Atualizado</span>
+        <span style="color: #fff; font-weight: 600;">Verificar Atualizações</span>
       </a>
       <div class="shield-badge">
         <span class="pulse-dot"></span>
@@ -478,9 +472,9 @@
       <div class="footer-badge">Zero Telemetria</div>
     </div>
     <div class="footer-right" style="display: flex; gap: 16px; align-items: center;">
-      <a href="https://nave.ozati.co/#download" target="_blank" style="display: flex; align-items: center; gap: 6px;">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <span>Atualizações</span>
+      <a href="https://nave.ozati.co/#download" target="_blank" style="display: flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.08); padding: 6px 14px; border-radius: 999px; border: 1px solid var(--glass-border); color: #fff; text-decoration: none; font-weight: 500;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Atualizar Nave (v1.0.0)</span>
       </a>
       <a href="https://nave.ozati.co" target="_blank">nave.ozati.co</a>
     </div>
