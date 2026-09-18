@@ -1,6 +1,7 @@
 # Binários do motor Chromium (muito pesados para o Git, baixados via setup script)
 bin/engine/
 bin/*.zip
+*.zip
 dist_installer/
 
 # Dados locais do usuário
