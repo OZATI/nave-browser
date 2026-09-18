@@ -218,7 +218,7 @@ namespace NaveBrowser
 
                 if (File.Exists(sqliteExe) && File.Exists(webDataPath))
                 {
-                    string sqlCmd = "INSERT OR REPLACE INTO keywords (id, short_name, keyword, favicon_url, url, safe_for_autoreplace, originating_url, date_created, usage_count, input_encodings, suggest_url, prepopulate_id, created_by_policy, last_modified, sync_guid, alternate_urls, image_url, search_url_post_params, suggest_url_post_params, image_url_post_params, new_tab_url, last_visited, created_from_play_api, is_active, starter_pack_id, enforced_by_policy, featured_by_policy) VALUES (1, 'Google', 'google.com', 'https://www.google.com/favicon.ico', 'https://www.google.com/search?q={searchTerms}', 1, '', 0, 100, 'UTF-8', 'https://www.google.com/complete/search?client=chrome&q={searchTerms}', 1, 0, 0, '485bf7d3-0215-45af-87dc-538868000001', '[]', '', '', '', '', 'https://www.google.com/_/chrome/newtab', 0, 0, 1, 0, 0, 0);";
+                    string sqlCmd = "UPDATE keywords SET short_name = 'Google', keyword = 'google.com', favicon_url = 'https://www.google.com/favicon.ico', url = 'https://www.google.com/search?q={searchTerms}', suggest_url = 'https://www.google.com/complete/search?client=chrome&q={searchTerms}', new_tab_url = 'https://www.google.com/_/chrome/newtab', prepopulate_id = 1, is_active = 1, safe_for_autoreplace = 1 WHERE id = 2 OR prepopulate_id = 1 OR keyword = 'google.com' OR keyword = 'google'; INSERT OR IGNORE INTO keywords (id, short_name, keyword, favicon_url, url, safe_for_autoreplace, originating_url, date_created, usage_count, input_encodings, suggest_url, prepopulate_id, created_by_policy, last_modified, sync_guid, alternate_urls, image_url, search_url_post_params, suggest_url_post_params, image_url_post_params, new_tab_url, last_visited, created_from_play_api, is_active, starter_pack_id, enforced_by_policy, featured_by_policy) VALUES (1, 'Google', 'google.com', 'https://www.google.com/favicon.ico', 'https://www.google.com/search?q={searchTerms}', 1, '', 0, 100, 'UTF-8', 'https://www.google.com/complete/search?client=chrome&q={searchTerms}', 1, 0, 0, '485bf7d3-0215-45af-87dc-538868000001', '[]', '', '', '', '', 'https://www.google.com/_/chrome/newtab', 0, 0, 1, 0, 0, 0);";
 
                     ProcessStartInfo psi = new ProcessStartInfo();
                     psi.FileName = sqliteExe;
@@ -323,3 +323,4 @@ namespace NaveBrowser
         }
     }
 }
+
