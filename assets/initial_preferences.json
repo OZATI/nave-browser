@@ -1,0 +1,31 @@
+{
+  "distribution": {
+    "import_bookmarks": false,
+    "import_history": false,
+    "import_search_engine": false,
+    "make_chrome_default_for_user": false,
+    "do_not_create_desktop_shortcut": true,
+    "do_not_create_quick_launch_shortcut": true,
+    "skip_first_run_ui": true,
+    "suppress_first_run_bubble": true,
+    "suppress_first_run_default_browser_prompt": true
+  },
+  "default_search_provider_data": {
+    "template_url_data": {
+      "short_name": "DuckDuckGo",
+      "keyword": "ddg",
+      "url": "https://duckduckgo.com/?q={searchTerms}",
+      "suggestions_url": "https://duckduckgo.com/ac/?q={searchTerms}&type=list",
+      "favicon_url": "https://duckduckgo.com/favicon.ico",
+      "safe_for_autoreplace": true,
+      "is_default": true
+    }
+  },
+  "profile": {
+    "block_third_party_cookies": true
+  },
+  "browser": {
+    "has_seen_welcome_page": true,
+    "check_default_browser": false
+  }
+}

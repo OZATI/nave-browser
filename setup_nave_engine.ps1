@@ -1,9 +1,10 @@
 <#
 .SYNOPSIS
-    Script de Inicialização e Montagem do Motor Chromium para o Nave Browser (OZATI).
+    Script de Inicialização e Montagem do Motor Chromium para o Nave Browser.
 .DESCRIPTION
     Baixa a base ultra-rápida do Chromium x64, injeta as flags de aceleração por hardware,
-    configura as extensões nativas (Nave Shield e Dark Theme) e gera o atalho oficial.
+    configura as extensões nativas (Nave Shield e Dark Theme), injeta initial_preferences
+    e gera o atalho oficial.
 #>
 
 $ErrorActionPreference = "Stop"
@@ -43,7 +44,14 @@ if (-not (Test-Path $extractTarget)) {
     Write-Host "[1/4] Motor Chromium já presente em $extractTarget" -ForegroundColor Green
 }
 
-# 2. Compilar Launcher Nativo Nave.exe se necessário
+# 2. Configurar initial_preferences
+$prefSource = Join-Path $assetsDir "initial_preferences.json"
+$prefTarget = Join-Path $extractTarget "initial_preferences"
+if (Test-Path $prefSource) {
+    Copy-Item $prefSource $prefTarget -Force
+}
+
+# 3. Compilar Launcher Nativo Nave.exe
 Write-Host "[2/4] Verificando executável nativo Nave.exe..." -ForegroundColor Yellow
 $cscPath = "C:\Windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
 $srcLauncher = Join-Path $root "src_launcher\Program.cs"
@@ -54,7 +62,7 @@ if (Test-Path $cscPath -and Test-Path $srcLauncher) {
     Write-Host "Launcher nativo Nave.exe atualizado com sucesso." -ForegroundColor Green
 }
 
-# 3. Criar o Launcher CMD alternativo
+# 4. Criar o Launcher CMD alternativo
 Write-Host "[3/4] Atualizando Nave.cmd com flags de aceleração máxima..." -ForegroundColor Yellow
 
 $coreExt = Join-Path $extDir "nave_core"
@@ -71,7 +79,9 @@ start "" "$chromeExe" ^
   --enable-gpu-rasterization ^
   --enable-zero-copy ^
   --ignore-gpu-blocklist ^
-  --enable-features=VaapiVideoDecoder,ParallelDownloading,CanvasOopRasterization,BackForwardCache,Prerender2,HighEfficiencyModeAvailable ^
+  --enable-features=VaapiVideoDecoder,ParallelDownloading,CanvasOopRasterization,BackForwardCache,Prerender2,HighEfficiencyModeAvailable,DnsOverHttps ^
+  --dns-over-https-templates="https://cloudflare-dns.com/dns-query" ^
+  --extension-mime-request-handling=always-prompt-for-install ^
   --disable-background-networking ^
   --disable-domain-reliability ^
   --disable-component-update ^
@@ -88,7 +98,7 @@ start "" "$chromeExe" ^
 
 Set-Content -Path $launcherCmd -Value $launcherScript -Encoding ASCII
 
-# 4. Criar Atalho na Área de Trabalho com o Ícone Oficial da Nave
+# 5. Criar Atalho na Área de Trabalho com o Ícone Oficial da Nave
 Write-Host "[4/4] Criando atalho na Área de Trabalho..." -ForegroundColor Yellow
 
 $desktop = [Environment]::GetFolderPath("Desktop")
@@ -102,11 +112,11 @@ if (Test-Path $naveExe) {
     $shortcut.IconLocation = "$naveExe,0"
 } else {
     $shortcut.TargetPath = $chromeExe
-    $shortcut.Arguments = "--user-data-dir=`"$userDataDir`" --load-extension=`"$extList`" --enable-gpu-rasterization --enable-zero-copy --ignore-gpu-blocklist --enable-features=VaapiVideoDecoder,ParallelDownloading,CanvasOopRasterization,BackForwardCache,Prerender2,HighEfficiencyModeAvailable --disable-background-networking --disable-sync --force-dark-mode"
+    $shortcut.Arguments = "--user-data-dir=`"$userDataDir`" --load-extension=`"$extList`" --enable-gpu-rasterization --enable-zero-copy --ignore-gpu-blocklist --enable-features=VaapiVideoDecoder,ParallelDownloading,CanvasOopRasterization,BackForwardCache,Prerender2,HighEfficiencyModeAvailable,DnsOverHttps --dns-over-https-templates=`"https://cloudflare-dns.com/dns-query`" --extension-mime-request-handling=always-prompt-for-install --disable-background-networking --disable-sync --force-dark-mode"
     $shortcut.IconLocation = "$icoPath,0"
     $shortcut.WorkingDirectory = $extractTarget
 }
-$shortcut.Description = "Nave - O Navegador da OZATI"
+$shortcut.Description = "Nave - O Navegador Mais Rápido"
 $shortcut.Save()
 
 Write-Host "==========================================" -ForegroundColor Green

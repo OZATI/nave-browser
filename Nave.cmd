@@ -13,7 +13,9 @@ start "" "%ENGINE%" ^
   --enable-gpu-rasterization ^
   --enable-zero-copy ^
   --ignore-gpu-blocklist ^
-  --enable-features=VaapiVideoDecoder,ParallelDownloading,CanvasOopRasterization,BackForwardCache,Prerender2,HighEfficiencyModeAvailable ^
+  --enable-features=VaapiVideoDecoder,ParallelDownloading,CanvasOopRasterization,BackForwardCache,Prerender2,HighEfficiencyModeAvailable,DnsOverHttps ^
+  --dns-over-https-templates="https://cloudflare-dns.com/dns-query" ^
+  --extension-mime-request-handling=always-prompt-for-install ^
   --disable-background-networking ^
   --disable-domain-reliability ^
   --disable-component-update ^

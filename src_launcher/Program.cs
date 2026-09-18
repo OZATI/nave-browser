@@ -12,20 +12,19 @@ namespace NaveBrowser
         public const string CurrentVersion = "1.0.0";
         public const string VersionCheckUrl = "https://nave.ozati.co/version.json";
 
+        private static volatile string s_pendingUpdateInstaller = null;
+
         [STAThread]
         static void Main(string[] args)
         {
             try
             {
-                // Forçar suporte a TLS 1.2 para conexões HTTPS modernas
+                // Suporte a TLS 1.2 para conexões seguras
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-
-                // 0. Iniciar verificação de atualizações em segundo plano (0ms de impacto no boot)
-                ThreadPool.QueueUserWorkItem(CheckForUpdatesAsync);
 
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
                 
-                // 1. Localizar executável do motor Chromium (portátil ou instalado)
+                // 1. Localizar executável do motor Chromium
                 string engineExe = Path.Combine(baseDir, "bin", "engine", "chrome.exe");
                 if (!File.Exists(engineExe))
                 {
@@ -39,16 +38,15 @@ namespace NaveBrowser
                 if (!File.Exists(engineExe))
                 {
                     MessageBox.Show(
-                        "Motor do Nave não encontrado.\nCertifique-se de que a pasta 'bin/engine' ou 'engine' está presente.",
-                        "Nave Browser - Erro de Inicialização",
+                        "Motor do Nave não encontrado.\nCertifique-se de que a pasta 'bin/engine' está presente.",
+                        "Nave Browser - Erro",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error
                     );
                     return;
                 }
 
-                // 2. Diretório de Perfil Isolado (Local-First, sem telemetria Google)
-                // Se instalado em Program Files / Programs, o perfil fica em LocalAppData/Nave/User Data
+                // 2. Diretório de Perfil Isolado (Local-First)
                 string profileDir = Path.Combine(baseDir, "profile_data");
                 if (baseDir.IndexOf("Programs", StringComparison.OrdinalIgnoreCase) >= 0 ||
                     baseDir.IndexOf("Program Files", StringComparison.OrdinalIgnoreCase) >= 0)
@@ -62,7 +60,7 @@ namespace NaveBrowser
                     Directory.CreateDirectory(profileDir);
                 }
 
-                // 3. Carregamento das Extensões Nativas (Nave Shield + Nave Dark Theme)
+                // 3. Extensões Nativas (Nave Core + Nave Theme)
                 string coreExt = Path.Combine(baseDir, "extensions", "nave_core");
                 string themeExt = Path.Combine(baseDir, "extensions", "nave_theme");
                 string extArg = "";
@@ -76,7 +74,7 @@ namespace NaveBrowser
                     extArg = " --load-extension=\"" + coreExt + "\"";
                 }
 
-                // 4. Flags de Performance Equivalentes e Superiores ao Brave + Identidade Nave
+                // 4. Flags de Performance Equivalentes e Superiores ao Brave
                 string launchArgs = "--user-data-dir=\"" + profileDir + "\" " +
                     "--enable-gpu-rasterization " +
                     "--enable-zero-copy " +
@@ -105,7 +103,36 @@ namespace NaveBrowser
                 psi.Arguments = launchArgs;
                 psi.UseShellExecute = false;
 
-                Process.Start(psi);
+                Process browserProc = Process.Start(psi);
+
+                // 5. Iniciar verificador em segundo plano (checa após 5s e depois a cada 30 minutos)
+                System.Threading.Timer updateTimer = new System.Threading.Timer(
+                    CheckForUpdatesCallback,
+                    null,
+                    5000,               // Primeira checagem 5s após abrir
+                    30 * 60 * 1000      // Repete a cada 30 minutos enquanto o navegador estiver aberto
+                );
+
+                // Aguarda o usuário fechar o navegador
+                if (browserProc != null)
+                {
+                    browserProc.WaitForExit();
+                }
+
+                // 6. Se baixou uma atualização pendente enquanto o navegador estava aberto,
+                // aplica a atualização silenciosa exatamente agora que o navegador acabou de fechar!
+                if (!string.IsNullOrEmpty(s_pendingUpdateInstaller) && File.Exists(s_pendingUpdateInstaller))
+                {
+                    try
+                    {
+                        ProcessStartInfo updatePsi = new ProcessStartInfo();
+                        updatePsi.FileName = s_pendingUpdateInstaller;
+                        updatePsi.Arguments = "/SILENT /CLOSEAPPLICATIONS";
+                        updatePsi.UseShellExecute = true;
+                        Process.Start(updatePsi);
+                    }
+                    catch { }
+                }
             }
             catch (Exception ex)
             {
@@ -118,13 +145,10 @@ namespace NaveBrowser
             }
         }
 
-        private static void CheckForUpdatesAsync(object state)
+        private static void CheckForUpdatesCallback(object state)
         {
             try
             {
-                // Aguarda 5 segundos após abrir para nunca interferir na inicialização
-                Thread.Sleep(5000);
-
                 using (WebClient wc = new WebClient())
                 {
                     wc.Headers.Add("User-Agent", "NaveBrowser/" + CurrentVersion);
@@ -132,7 +156,6 @@ namespace NaveBrowser
 
                     string remoteVersion = ExtractJsonValue(json, "version");
                     string downloadUrl = ExtractJsonValue(json, "download_url");
-                    string notes = ExtractJsonValue(json, "notes");
 
                     if (!string.IsNullOrEmpty(remoteVersion) && !string.IsNullOrEmpty(downloadUrl))
                     {
@@ -140,30 +163,15 @@ namespace NaveBrowser
                         {
                             string tempInstaller = Path.Combine(Path.GetTempPath(), "Nave-Setup-v" + remoteVersion + ".exe");
 
-                            // Baixar instalador em background
-                            wc.DownloadFile(downloadUrl, tempInstaller);
+                            // Baixa em segundo plano silencioso se ainda não tiver baixado
+                            if (!File.Exists(tempInstaller))
+                            {
+                                wc.DownloadFile(downloadUrl, tempInstaller);
+                            }
 
                             if (File.Exists(tempInstaller))
                             {
-                                string msg = "Uma nova versão do Nave (v" + remoteVersion + ") está disponível!\n\n" +
-                                             (string.IsNullOrEmpty(notes) ? "" : "Novidades:\n" + notes + "\n\n") +
-                                             "Deseja instalar a atualização agora em segundo plano?";
-
-                                DialogResult dr = MessageBox.Show(
-                                    msg,
-                                    "Nave Browser - Atualização Disponível",
-                                    MessageBoxButtons.YesNo,
-                                    MessageBoxIcon.Information
-                                );
-
-                                if (dr == DialogResult.Yes)
-                                {
-                                    ProcessStartInfo updatePsi = new ProcessStartInfo();
-                                    updatePsi.FileName = tempInstaller;
-                                    updatePsi.Arguments = "/SILENT /CLOSEAPPLICATIONS";
-                                    updatePsi.UseShellExecute = true;
-                                    Process.Start(updatePsi);
-                                }
+                                s_pendingUpdateInstaller = tempInstaller;
                             }
                         }
                     }
@@ -171,7 +179,7 @@ namespace NaveBrowser
             }
             catch
             {
-                // Silencioso se estiver offline
+                // Silencioso caso esteja offline
             }
         }
 
