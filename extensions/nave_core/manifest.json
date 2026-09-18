@@ -1,12 +1,13 @@
-{
+﻿{
   "manifest_version": 3,
   "name": "Nave Core & Shield",
-  "version": "1.0.1",
-  "description": "Dashboard OZATI, barra lateral com busca instantânea Google, bloqueio nativo de rastreadores e navegação ultra rápida.",
+  "version": "1.0.2",
+  "description": "Barra Lateral de Guias Verticais, Dashboard OZATI, bloqueio nativo de rastreadores e navegação ultra rápida.",
   "permissions": [
-    "declarativeNetRequest",
+    "tabs",
     "storage",
-    "sidePanel"
+    "sidePanel",
+    "declarativeNetRequest"
   ],
   "side_panel": {
     "default_path": "sidepanel.html"

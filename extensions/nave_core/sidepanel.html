@@ -1,412 +1,147 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nave Barra Lateral</title>
-
-  <!-- Tipografia Oficial do App: Inter -->
+  <title>Nave Barra Lateral de Guias</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg: #000000;
-      --bg-surface: #0a0a0a;
-      --bg-card: #111111;
-      --border: #222222;
-      --border-subtle: #161616;
-      --border-hover: #444444;
-      --text: #ffffff;
-      --text-muted: #888888;
-      --text-dim: #555555;
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
-    }
-
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: var(--font-sans);
-      padding: 16px;
-      user-select: none;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    /* Header */
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .brand svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    .brand-name {
-      font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      color: #fff;
-    }
-
-    .shield-status {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.7rem;
-      font-weight: 500;
-      color: var(--text-muted);
-    }
-
-    .dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #ffffff;
-    }
-
-    /* Busca Rápida Google */
-    .search-box {
-      display: flex;
-      align-items: center;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 8px 12px;
-      transition: border-color 0.2s ease;
-    }
-
-    .search-box:focus-within {
-      border-color: #666666;
-    }
-
-    .search-box svg {
-      width: 16px;
-      height: 16px;
-      color: var(--text-dim);
-      margin-right: 10px;
-      flex-shrink: 0;
-    }
-
-    .search-input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: #fff;
-      font-size: 0.85rem;
-      font-family: inherit;
-    }
-
-    .search-input::placeholder {
-      color: var(--text-dim);
-    }
-
-    .section-title {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-dim);
-      margin-bottom: 8px;
-    }
-
-    /* Grid de Apps Rápidos */
-    .apps-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-    }
-
-    .app-card {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 8px 10px;
-      text-decoration: none;
-      color: var(--text);
-      transition: all 0.15s ease;
-    }
-
-    .app-card:hover {
-      border-color: var(--border-hover);
-      background: #141414;
-      transform: translateY(-1px);
-    }
-
-    .app-icon {
-      width: 24px;
-      height: 24px;
-      border-radius: 4px;
-      background: #111;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .app-icon svg {
-      width: 15px;
-      height: 15px;
-    }
-
-    .app-info {
-      overflow: hidden;
-    }
-
-    .app-name {
-      font-size: 0.8rem;
-      font-weight: 600;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .app-desc {
-      font-size: 0.65rem;
-      color: var(--text-dim);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    /* Bloco de Notas Lateral */
-    .notepad-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      flex: 1;
-    }
-
-    .notepad-textarea {
-      width: 100%;
-      height: 140px;
-      background: #000;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 10px;
-      color: #fff;
-      font-size: 0.82rem;
-      font-family: inherit;
-      resize: none;
-      outline: none;
-      transition: border-color 0.2s ease;
-    }
-
-    .notepad-textarea:focus {
-      border-color: #555;
-    }
-
-    .notepad-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.7rem;
-      color: var(--text-dim);
-    }
-
-    /* Footer */
-    .sidebar-footer {
-      margin-top: auto;
-      padding-top: 10px;
-      border-top: 1px solid var(--border-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.7rem;
-      color: var(--text-dim);
-    }
-
-    .sidebar-footer a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.15s ease;
-    }
-
-    .sidebar-footer a:hover {
-      color: #fff;
-    }
-  </style>
+  <link rel="stylesheet" href="sidepanel.css">
 </head>
 <body>
 
-  <!-- Header -->
-  <div class="header">
-    <div class="brand">
-      <svg viewBox="0 0 100 100" fill="none">
-        <circle cx="50" cy="50" r="38" stroke="#ffffff" stroke-width="12" />
-      </svg>
-      <span class="brand-name">ozati™ / lateral</span>
+  <!-- Topo: Branding e Nova Guia -->
+  <header class="sidebar-header">
+    <div class="brand-wrapper">
+      <img src="icons/nave.svg" alt="Nave Logo" class="brand-logo" />
+      <span class="brand-title">Nave</span>
     </div>
-    <div class="shield-status">
-      <span class="dot"></span>
-      Nave Shield
+
+    <div class="header-actions">
+      <button id="btnCleanDuplicates" class="btn-icon-action" title="Limpar guias duplicadas">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+      </button>
+
+      <button id="btnNewTabHeader" class="btn-new-tab-header" title="Nova Guia (Ctrl+T)">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span>Nova Guia</span>
+      </button>
     </div>
+  </header>
+
+  <!-- Seletor de Modo: Guias vs Hub -->
+  <div class="view-toggle">
+    <button id="btnToggleTabs" class="toggle-tab active">Guias Verticais</button>
+    <button id="btnToggleHub" class="toggle-tab">Hub OZATI</button>
   </div>
 
-  <!-- Busca Google -->
-  <div>
-    <div class="section-title">Busca Instantânea</div>
-    <form id="googleSearchForm" class="search-box">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Barra de Busca Rápida -->
+  <div class="search-container">
+    <div class="search-box">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="11" cy="11" r="8"></circle>
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
-      <input 
-        type="text" 
-        id="googleQuery" 
-        class="search-input" 
-        placeholder="Pesquisar no Google ou digitar link..."
-      >
-    </form>
-  </div>
-
-  <!-- Apps & Produtividade -->
-  <div>
-    <div class="section-title">Acesso Rápido</div>
-    <div class="apps-grid">
-      <a href="https://www.google.com" target="_blank" class="app-card">
-        <div class="app-icon">
-          <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.65v3h3.88c2.27-2.09 3.66-5.17 3.66-9.09z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.1C3.28 21.43 7.37 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.32c-.25-.72-.38-1.49-.38-2.32s.13-1.6.38-2.32V6.58H1.25C.45 8.17 0 9.97 0 12s.45 3.83 1.25 5.42l4.03-3.1z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.37 0 3.28 2.57 1.25 6.58l4.03 3.1c.95-2.83 3.6-4.93 6.72-4.93z"/></svg>
-        </div>
-        <div class="app-info">
-          <div class="app-name">Google</div>
-          <div class="app-desc">Busca Web</div>
-        </div>
-      </a>
-
-      <a href="https://gemini.google.com" target="_blank" class="app-card">
-        <div class="app-icon">
-          <svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2L9.5 9.5 2 12l7.5 2.5L12 22l2.5-7.5L22 12l-7.5-2.5z"/></svg>
-        </div>
-        <div class="app-info">
-          <div class="app-name">Gemini</div>
-          <div class="app-desc">Google AI</div>
-        </div>
-      </a>
-
-      <a href="https://youtube.com" target="_blank" class="app-card">
-        <div class="app-icon">
-          <svg viewBox="0 0 24 24" fill="#ff0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-        </div>
-        <div class="app-info">
-          <div class="app-name">YouTube</div>
-          <div class="app-desc">Vídeos</div>
-        </div>
-      </a>
-
-      <a href="https://web.whatsapp.com" target="_blank" class="app-card">
-        <div class="app-icon">
-          <svg viewBox="0 0 24 24" fill="#25d366"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/></svg>
-        </div>
-        <div class="app-info">
-          <div class="app-name">WhatsApp</div>
-          <div class="app-desc">Mensagens</div>
-        </div>
-      </a>
-
-      <a href="https://chatgpt.com" target="_blank" class="app-card">
-        <div class="app-icon">
-          <svg viewBox="0 0 24 24" fill="#fff"><path d="M22.28 9.9a5.98 5.98 0 0 0-.48-4.68 6.04 6.04 0 0 0-6.62-2.73A6 6 0 0 0 10.4 1a6.04 6.04 0 0 0-5.74 4.19 6 6 0 0 0-4.14 3 6.04 6.04 0 0 0 .74 7.15 5.98 5.98 0 0 0 .48 4.68 6.04 6.04 0 0 0 6.62 2.73A6 6 0 0 0 13.6 23a6.04 6.04 0 0 0 5.74-4.19 6 6 0 0 0 4.14-3 6.04 6.04 0 0 0-.74-7.15z"/></svg>
-        </div>
-        <div class="app-info">
-          <div class="app-name">ChatGPT</div>
-          <div class="app-desc">IA Assistente</div>
-        </div>
-      </a>
-
-      <a href="https://nave.ozati.co" target="_blank" class="app-card">
-        <div class="app-icon">
-          <svg viewBox="0 0 100 100" fill="none"><circle cx="50" cy="50" r="38" stroke="#ffffff" stroke-width="12"/></svg>
-        </div>
-        <div class="app-info">
-          <div class="app-name">OZATI Hub</div>
-          <div class="app-desc">Portal Oficial</div>
-        </div>
-      </a>
+      <input type="text" id="tabSearch" class="search-input" placeholder="Pesquisar guias abertas..." autocomplete="off" />
     </div>
   </div>
 
-  <!-- Bloco de Notas Rápido -->
-  <div class="notepad-card">
-    <div class="section-title">Bloco de Notas Local</div>
-    <textarea id="quickNotes" class="notepad-textarea" placeholder="Notas e rascunhos temporários salvos no seu disco..."></textarea>
-    <div class="notepad-footer">
-      <span>Armazenamento local</span>
-      <span id="noteCharCount">0 carac.</span>
+  <!-- Conteúdo Principal com Scroll -->
+  <main class="panel-content">
+
+    <!-- MODO 1: GUIAS VERTICAIS -->
+    <div id="tabsContainer" style="display: flex; flex-direction: column; gap: 12px; flex: 1;">
+      
+      <!-- Seção Fixadas -->
+      <section id="pinnedSection" class="section-wrapper" style="display: none;">
+        <div class="section-header">
+          <span class="section-label">Fixadas</span>
+        </div>
+        <div id="pinnedGrid" class="pinned-grid"></div>
+      </section>
+
+      <!-- Seção Abertas -->
+      <section class="section-wrapper" style="flex: 1;">
+        <div class="section-header">
+          <span class="section-label">Abertas</span>
+          <span id="tabsCountBadge" class="badge-count">0</span>
+        </div>
+        <div id="tabsList" class="tabs-list">
+          <!-- Injetado via JS -->
+        </div>
+      </section>
+
     </div>
-  </div>
 
-  <!-- Footer -->
-  <div class="sidebar-footer">
-    <span>Nave Browser</span>
-    <a href="https://nave.ozati.co" target="_blank">nave.ozati.co</a>
-  </div>
+    <!-- MODO 2: HUB OZATI (Apps + Notas Rápidas) -->
+    <div id="hubContainer" class="hub-view" style="display: none;">
+      
+      <div class="section-wrapper">
+        <div class="section-header">
+          <span class="section-label">Acesso Rápido</span>
+        </div>
+        <div class="apps-grid">
+          <a href="https://www.google.com" target="_blank" class="app-card">
+            <div class="app-icon">
+              <svg viewBox="0 0 24 24" width="14" height="14"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.65v3h3.88c2.27-2.09 3.66-5.17 3.66-9.09z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.1C3.28 21.43 7.37 24 12 24z"/><path fill="#FBBC05" d="M5.28 14.32c-.25-.72-.38-1.49-.38-2.32s.13-1.6.38-2.32V6.58H1.25C.45 8.17 0 9.97 0 12s.45 3.83 1.25 5.42l4.03-3.1z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.37 0 3.28 2.57 1.25 6.58l4.03 3.1c.95-2.83 3.6-4.93 6.72-4.93z"/></svg>
+            </div>
+            <div class="app-name">Google</div>
+          </a>
 
-  <script>
-    const searchForm = document.getElementById('googleSearchForm');
-    const searchInput = document.getElementById('googleQuery');
+          <a href="https://gemini.google.com" target="_blank" class="app-card">
+            <div class="app-icon">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M12 2L9.5 9.5 2 12l7.5 2.5L12 22l2.5-7.5L22 12l-7.5-2.5z"/></svg>
+            </div>
+            <div class="app-name">Gemini</div>
+          </a>
 
-    searchForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const val = searchInput.value.trim();
-      if (!val) return;
+          <a href="https://chatgpt.com" target="_blank" class="app-card">
+            <div class="app-icon">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M22.28 9.9a5.98 5.98 0 0 0-.48-4.68 6.04 6.04 0 0 0-6.62-2.73A6 6 0 0 0 10.4 1a6.04 6.04 0 0 0-5.74 4.19 6 6 0 0 0-4.14 3 6.04 6.04 0 0 0 .74 7.15 5.98 5.98 0 0 0 .48 4.68 6.04 6.04 0 0 0 6.62 2.73A6 6 0 0 0 13.6 23a6.04 6.04 0 0 0 5.74-4.19 6 6 0 0 0 4.14-3 6.04 6.04 0 0 0-.74-7.15z"/></svg>
+            </div>
+            <div class="app-name">ChatGPT</div>
+          </a>
 
-      if (val.startsWith('http://') || val.startsWith('https://')) {
-        window.open(val, '_blank');
-      } else if (val.includes('.') && !val.includes(' ')) {
-        window.open('https://' + val, '_blank');
-      } else {
-        window.open('https://www.google.com/search?q=' + encodeURIComponent(val), '_blank');
-      }
-    });
+          <a href="https://github.com" target="_blank" class="app-card">
+            <div class="app-icon">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+            </div>
+            <div class="app-name">GitHub</div>
+          </a>
+        </div>
+      </div>
 
-    const notesEl = document.getElementById('quickNotes');
-    const charCount = document.getElementById('noteCharCount');
+      <!-- Bloco de Notas Local -->
+      <div class="notepad-card">
+        <div class="section-header">
+          <span class="section-label">Bloco de Notas Local</span>
+        </div>
+        <textarea id="quickNotes" class="notepad-textarea" placeholder="Rascunhos temporários salvos no seu disco..."></textarea>
+        <div class="notepad-footer">
+          <span>Local-First</span>
+          <span id="noteCharCount">0 carac.</span>
+        </div>
+      </div>
 
-    notesEl.value = localStorage.getItem('nave_side_notes') || '';
-    charCount.textContent = notesEl.value.length + ' carac.';
+    </div>
 
-    notesEl.addEventListener('input', () => {
-      localStorage.setItem('nave_side_notes', notesEl.value);
-      charCount.textContent = notesEl.value.length + ' carac.';
-    });
-  </script>
+  </main>
+
+  <!-- Rodapé Fixo -->
+  <footer class="sidebar-footer">
+    <span class="footer-version">Nave v1.0.2</span>
+    <button id="btnPinSidebar" class="footer-btn" title="Fixar barra lateral">
+      OZATI Core
+    </button>
+  </footer>
+
+  <script src="sidepanel.js"></script>
 </body>
 </html>

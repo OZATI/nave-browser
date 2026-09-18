@@ -1,4 +1,4 @@
-{
+﻿{
   "distribution": {
     "import_bookmarks": false,
     "import_history": false,
@@ -28,5 +28,8 @@
   },
   "profile": {
     "block_third_party_cookies": true
+  },
+  "side_panel": {
+    "is_right_aligned": false
   }
 }
