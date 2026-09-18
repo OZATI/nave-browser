@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "Nave Core & Shield",
+  "version": "1.0.0",
+  "description": "Dashboard OZATI, bloqueio nativo de rastreadores e aceleração de performance.",
+  "permissions": [
+    "declarativeNetRequest",
+    "storage"
+  ],
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Nave Shield • OZATI",
+    "default_icon": {
+      "16": "icons/nave-16.png",
+      "32": "icons/nave-32.png",
+      "48": "icons/nave-48.png",
+      "128": "icons/nave-128.png"
+    }
+  },
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "nave_shield_rules",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "icons": {
+    "16": "icons/nave-16.png",
+    "32": "icons/nave-32.png",
+    "48": "icons/nave-48.png",
+    "128": "icons/nave-128.png"
+  }
+}

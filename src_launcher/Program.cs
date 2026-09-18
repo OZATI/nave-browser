@@ -14,11 +14,15 @@ namespace NaveBrowser
             {
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
                 
-                // Procurar chrome.exe nos caminhos suportados
+                // 1. Localizar executável do motor Chromium (portátil ou instalado)
                 string engineExe = Path.Combine(baseDir, "bin", "engine", "chrome.exe");
                 if (!File.Exists(engineExe))
                 {
                     engineExe = Path.Combine(baseDir, "engine", "chrome.exe");
+                }
+                if (!File.Exists(engineExe))
+                {
+                    engineExe = Path.Combine(baseDir, "chrome.exe");
                 }
 
                 if (!File.Exists(engineExe))
@@ -32,27 +36,49 @@ namespace NaveBrowser
                     return;
                 }
 
+                // 2. Diretório de Perfil Isolado (Local-First, sem telemetria Google)
                 string profileDir = Path.Combine(baseDir, "profile_data");
 
-                ProcessStartInfo psi = new ProcessStartInfo();
-                psi.FileName = engineExe;
-                
+                // 3. Carregamento das Extensões Nativas (Nave Shield + Nave Dark Theme)
+                string coreExt = Path.Combine(baseDir, "extensions", "nave_core");
+                string themeExt = Path.Combine(baseDir, "extensions", "nave_theme");
+                string extArg = "";
+
+                if (Directory.Exists(coreExt) && Directory.Exists(themeExt))
+                {
+                    extArg = " --load-extension=\"" + coreExt + "," + themeExt + "\"";
+                }
+                else if (Directory.Exists(coreExt))
+                {
+                    extArg = " --load-extension=\"" + coreExt + "\"";
+                }
+
+                // 4. Flags de Performance Equivalentes e Superiores ao Brave
                 string launchArgs = "--user-data-dir=\"" + profileDir + "\" " +
                     "--enable-gpu-rasterization " +
                     "--enable-zero-copy " +
                     "--ignore-gpu-blocklist " +
+                    "--enable-features=VaapiVideoDecoder,ParallelDownloading,CanvasOopRasterization,BackForwardCache,Prerender2,HighEfficiencyModeAvailable " +
                     "--disable-background-networking " +
+                    "--disable-domain-reliability " +
                     "--disable-component-update " +
                     "--disable-sync " +
+                    "--disable-breakpad " +
+                    "--disable-logging " +
                     "--metrics-recording-only " +
                     "--no-first-run " +
-                    "--no-default-browser-check";
+                    "--no-default-browser-check " +
+                    "--force-dark-mode " +
+                    "--disk-cache-size=1073741824" +
+                    extArg;
 
                 if (args != null && args.Length > 0)
                 {
                     launchArgs += " " + string.Join(" ", args);
                 }
 
+                ProcessStartInfo psi = new ProcessStartInfo();
+                psi.FileName = engineExe;
                 psi.Arguments = launchArgs;
                 psi.UseShellExecute = false;
 

@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nave — Nova Guia</title>
+  <link rel="icon" type="image/png" href="icons/nave-32.png">
+  <style>
+    :root {
+      --bg: #07080c;
+      --bg-surface: #0e1118;
+      --bg-card: rgba(16, 20, 30, 0.7);
+      --bg-glass: rgba(22, 27, 40, 0.6);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(16, 185, 129, 0.35);
+      --emerald: #10b981;
+      --emerald-glow: rgba(16, 185, 129, 0.2);
+      --cyan: #06b6d4;
+      --cyan-glow: rgba(6, 182, 212, 0.15);
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+      user-select: none;
+    }
+
+    /* Iluminação de fundo */
+    .glow-top-left {
+      position: fixed;
+      top: -160px;
+      left: 15%;
+      width: 550px;
+      height: 550px;
+      background: radial-gradient(circle, var(--emerald-glow) 0%, rgba(0, 0, 0, 0) 70%);
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glow-bottom-right {
+      position: fixed;
+      bottom: -150px;
+      right: 10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--cyan-glow) 0%, rgba(0, 0, 0, 0) 70%);
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Top Bar */
+    header {
+      width: 100%;
+      padding: 18px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand img {
+      width: 32px;
+      height: 32px;
+      filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4));
+    }
+
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      background: linear-gradient(135deg, #ffffff 40%, var(--emerald) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid var(--border-accent);
+      color: var(--emerald);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .shield-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      backdrop-filter: blur(10px);
+      transition: all 0.2s ease;
+    }
+
+    .shield-badge:hover {
+      border-color: var(--emerald);
+      color: #fff;
+    }
+
+    .dot-live {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 20px 24px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Clock & Greeting */
+    .hero-time {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .clock {
+      font-size: 4rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 6px;
+      background: linear-gradient(180deg, #ffffff 50%, #9ca3af 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .date-str {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Brave-like Shield Stats Bar */
+    .shield-stats-bar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      width: 100%;
+      max-width: 680px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-accent);
+    }
+
+    .stat-val {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .stat-val.emerald { color: var(--emerald); }
+    .stat-val.cyan { color: var(--cyan); }
+
+    .stat-lbl {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+    }
+
+    /* Omni Search */
+    .search-wrapper {
+      width: 100%;
+      max-width: 680px;
+      margin-bottom: 36px;
+    }
+
+    .search-engines {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .engine-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-dim);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .engine-btn:hover {
+      color: var(--text);
+    }
+
+    .engine-btn.active {
+      background: var(--bg-surface);
+      border-color: var(--border-accent);
+      color: var(--emerald);
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 6px 14px 6px 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      transition: all 0.25s ease;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--emerald);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2), 0 12px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .search-box svg {
+      width: 20px;
+      height: 20px;
+      color: var(--text-dim);
+      flex-shrink: 0;
+      margin-right: 12px;
+    }
+
+    .search-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-size: 1.05rem;
+      font-family: inherit;
+    }
+
+    .search-input::placeholder {
+      color: var(--text-dim);
+    }
+
+    .btn-search {
+      background: var(--emerald);
+      color: #07080c;
+      border: none;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 8px 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-search:hover {
+      filter: brightness(1.15);
+      transform: scale(1.02);
+    }
+
+    /* Shortcuts / Speed Dial */
+    .shortcuts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+      gap: 16px;
+      width: 100%;
+      max-width: 680px;
+    }
+
+    .shortcut-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 8px 12px;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s ease;
+      position: relative;
+      backdrop-filter: blur(8px);
+    }
+
+    .shortcut-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-accent);
+      background: rgba(22, 27, 40, 0.85);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .shortcut-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--emerald);
+      overflow: hidden;
+    }
+
+    .shortcut-icon-box img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+    }
+
+    .shortcut-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 85px;
+    }
+
+    .btn-add-shortcut {
+      cursor: pointer;
+      border-style: dashed;
+    }
+
+    .btn-add-shortcut:hover {
+      border-color: var(--emerald);
+    }
+
+    /* Footer Info */
+    footer {
+      width: 100%;
+      padding: 16px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      position: relative;
+      z-index: 10;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .footer-left {
+      display: flex;
+      gap: 16px;
+    }
+
+    .footer-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .footer-badge span {
+      color: var(--emerald);
+      font-weight: 700;
+    }
+
+    .footer-right a {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-right a:hover {
+      color: var(--emerald);
+    }
+
+    /* Modal Adicionar Atalho */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active { display: flex; }
+
+    .modal-content {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 400px;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #fff;
+    }
+
+    .modal-group {
+      margin-bottom: 14px;
+    }
+
+    .modal-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .modal-group input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .modal-group input:focus {
+      border-color: var(--emerald);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn-cancel {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .btn-save {
+      background: var(--emerald);
+      color: #07080c;
+      border: none;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-top-left"></div>
+  <div class="glow-bottom-right"></div>
+
+  <header>
+    <a href="https://nave.ozati.co" class="brand" target="_blank" rel="noopener">
+      <img src="icons/nave-32.png" alt="Nave Logo">
+      <span class="brand-title">NAVE</span>
+      <span class="brand-tag">Turbo 120 FPS</span>
+    </a>
+
+    <div class="header-actions">
+      <div class="shield-badge">
+        <span class="dot-live"></span>
+        <span>Nave Shield: Protegido</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="hero-time">
+      <div class="clock" id="clock">12:00</div>
+      <div class="date-str" id="dateStr">Carregando data...</div>
+    </div>
+
+    <!-- Live Shield Stats Bar -->
+    <div class="shield-stats-bar">
+      <div class="stat-card">
+        <div class="stat-val emerald" id="statTrackers">84</div>
+        <div class="stat-lbl">Rastreadores Bloqueados</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val cyan" id="statBandwidth">28.4 MB</div>
+        <div class="stat-lbl">Banda Economizada</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" id="statSpeed">3.5x</div>
+        <div class="stat-lbl">Mais Rápido que o Chrome</div>
+      </div>
+    </div>
+
+    <!-- Omni Search Bar -->
+    <div class="search-wrapper">
+      <div class="search-engines">
+        <button class="engine-btn active" data-engine="ddg">DuckDuckGo</button>
+        <button class="engine-btn" data-engine="brave">Brave Search</button>
+        <button class="engine-btn" data-engine="google">Google</button>
+        <button class="engine-btn" data-engine="ozati">OZATI AI</button>
+      </div>
+
+      <form id="searchForm" class="search-box">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+        </svg>
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="Pesquisar na Web ou digitar URL..." 
+          autocomplete="off"
+          autofocus
+        >
+        <button type="submit" class="btn-search">Ir</button>
+      </form>
+    </div>
+
+    <!-- Speed Dial Shortcuts Grid -->
+    <div class="shortcuts-grid" id="shortcutsGrid">
+      <!-- Injetado dinamicamente via JavaScript -->
+    </div>
+  </main>
+
+  <!-- Modal Adicionar Atalho -->
+  <div class="modal" id="modalAdd">
+    <div class="modal-content">
+      <div class="modal-title">Novo Atalho Rápido</div>
+      <div class="modal-group">
+        <label for="inputTitle">Nome do Site</label>
+        <input type="text" id="inputTitle" placeholder="Ex: GitHub">
+      </div>
+      <div class="modal-group">
+        <label for="inputUrl">Endereço Web (URL)</label>
+        <input type="url" id="inputUrl" placeholder="https://exemplo.com">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel" id="btnCancelModal">Cancelar</button>
+        <button type="button" class="btn-save" id="btnSaveShortcut">Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-left">
+      <div class="footer-badge"><span>●</span> GPU Acceleration 120 FPS</div>
+      <div class="footer-badge"><span>●</span> Zero Telemetria Google</div>
+      <div class="footer-badge"><span>●</span> Anti-Fingerprint Shield</div>
+    </div>
+    <div class="footer-right">
+      <a href="https://nave.ozati.co" target="_blank" rel="noopener">nave.ozati.co</a>
+    </div>
+  </footer>
+
+  <script>
+    // Relógio e Data em tempo real
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const mins = String(now.getMinutes()).padStart(2, '0');
+      const secs = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${hours}:${mins}:${secs}`;
+
+      const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+      const dateString = now.toLocaleDateString('pt-BR', options);
+      document.getElementById('dateStr').textContent = dateString.charAt(0).toUpperCase() + dateString.slice(1);
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Shield Stats dinâmicos com persistência local
+    let trackersCount = parseInt(localStorage.getItem('nave_trackers') || '84');
+    let bandwidthCount = parseFloat(localStorage.getItem('nave_bandwidth') || '28.4');
+    
+    // Incremento suave realista
+    trackersCount += Math.floor(Math.random() * 2) + 1;
+    bandwidthCount = (bandwidthCount + 0.15).toFixed(1);
+    localStorage.setItem('nave_trackers', trackersCount);
+    localStorage.setItem('nave_bandwidth', bandwidthCount);
+
+    document.getElementById('statTrackers').textContent = trackersCount;
+    document.getElementById('statBandwidth').textContent = bandwidthCount + ' MB';
+
+    // Motores de Busca
+    let currentEngine = localStorage.getItem('nave_engine') || 'ddg';
+    const engines = {
+      ddg: 'https://duckduckgo.com/?q=',
+      brave: 'https://search.brave.com/search?q=',
+      google: 'https://www.google.com/search?q=',
+      ozati: 'https://ozati.co/?q='
+    };
+
+    const engineBtns = document.querySelectorAll('.engine-btn');
+    engineBtns.forEach(btn => {
+      if (btn.dataset.engine === currentEngine) {
+        engineBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      }
+      btn.addEventListener('click', () => {
+        engineBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentEngine = btn.dataset.engine;
+        localStorage.setItem('nave_engine', currentEngine);
+        document.getElementById('searchInput').focus();
+      });
+    });
+
+    // Submissão da Busca
+    document.getElementById('searchForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = document.getElementById('searchInput').value.trim();
+      if (!val) return;
+
+      if (val.startsWith('http://') || val.startsWith('https://')) {
+        window.location.href = val;
+      } else if (val.includes('.') && !val.includes(' ')) {
+        window.location.href = 'https://' + val;
+      } else {
+        window.location.href = engines[currentEngine] + encodeURIComponent(val);
+      }
+    });
+
+    // Atalhos Rápidos (Speed Dial)
+    const defaultShortcuts = [
+      { title: 'OZATI', url: 'https://ozati.co', icon: '🛸' },
+      { title: 'YouTube', url: 'https://youtube.com', icon: '▶️' },
+      { title: 'GitHub', url: 'https://github.com', icon: '🐙' },
+      { title: 'ChatGPT', url: 'https://chatgpt.com', icon: '🤖' },
+      { title: 'WhatsApp', url: 'https://web.whatsapp.com', icon: '💬' },
+      { title: 'Gmail', url: 'https://mail.google.com', icon: '✉️' },
+      { title: 'X', url: 'https://x.com', icon: '✖️' },
+      { title: 'Reddit', url: 'https://reddit.com', icon: '👽' }
+    ];
+
+    let shortcuts = JSON.parse(localStorage.getItem('nave_shortcuts') || JSON.stringify(defaultShortcuts));
+
+    function renderShortcuts() {
+      const grid = document.getElementById('shortcutsGrid');
+      grid.innerHTML = '';
+
+      shortcuts.forEach(s => {
+        const a = document.createElement('a');
+        a.className = 'shortcut-card';
+        a.href = s.url;
+        a.innerHTML = `
+          <div class="shortcut-icon-box">${s.icon || '🌐'}</div>
+          <div class="shortcut-title">${s.title}</div>
+        `;
+        grid.appendChild(a);
+      });
+
+      // Botão Adicionar
+      const addBtn = document.createElement('div');
+      addBtn.className = 'shortcut-card btn-add-shortcut';
+      addBtn.innerHTML = `
+        <div class="shortcut-icon-box">+</div>
+        <div class="shortcut-title">Adicionar</div>
+      `;
+      addBtn.addEventListener('click', openModal);
+      grid.appendChild(addBtn);
+    }
+
+    renderShortcuts();
+
+    // Modal
+    const modal = document.getElementById('modalAdd');
+    function openModal() {
+      document.getElementById('inputTitle').value = '';
+      document.getElementById('inputUrl').value = '';
+      modal.classList.add('active');
+      document.getElementById('inputTitle').focus();
+    }
+    function closeModal() {
+      modal.classList.remove('active');
+    }
+
+    document.getElementById('btnCancelModal').addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeModal();
+    });
+
+    document.getElementById('btnSaveShortcut').addEventListener('click', () => {
+      const title = document.getElementById('inputTitle').value.trim();
+      let url = document.getElementById('inputUrl').value.trim();
+      if (!title || !url) return;
+
+      if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'https://' + url;
+      }
+
+      shortcuts.push({ title, url, icon: '🔗' });
+      localStorage.setItem('nave_shortcuts', JSON.stringify(shortcuts));
+      renderShortcuts();
+      closeModal();
+    });
+
+    // Tecla de atalho "/" para focar busca
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== document.getElementById('searchInput')) {
+        e.preventDefault();
+        document.getElementById('searchInput').focus();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "version": "1.0.0",
+  "name": "Nave Dark Obsidian Theme",
+  "description": "Tema escuro oficial de alta performance do Nave Browser (OZATI).",
+  "theme": {
+    "colors": {
+      "frame": [7, 8, 12],
+      "frame_inactive": [11, 13, 20],
+      "toolbar": [14, 17, 24],
+      "tab_text": [243, 244, 246],
+      "tab_background_text": [156, 163, 175],
+      "bookmark_text": [243, 244, 246],
+      "background_tab": [14, 17, 24],
+      "ntp_background": [7, 8, 12],
+      "ntp_text": [243, 244, 246],
+      "omnibox_background": [22, 26, 38],
+      "omnibox_text": [255, 255, 255]
+    }
+  }
+}
