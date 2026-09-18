@@ -1,0 +1,13 @@
+# Binários do motor Chromium (muito pesados para o Git, baixados via setup script)
+bin/engine/
+bin/*.zip
+dist_installer/
+
+# Dados locais do usuário
+profile_data/
+
+# Logs e arquivos de sistema
+*.log
+Thumbs.db
+Desktop.ini
+.DS_Store
