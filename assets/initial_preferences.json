@@ -16,10 +16,10 @@
   "default_search_provider_data": {
     "template_url_data": {
       "short_name": "Google",
-      "keyword": "google.com",
-      "url": "https://www.google.com/search?q=%s",
-      "suggestions_url": "https://suggestqueries.google.com/complete/search?client=chrome&q=%s",
-      "favicon_url": "https://www.google.com/favicon.ico",
+      "keyword": "google.com.br",
+      "url": "https://www.google.com.br/search?q=%s",
+      "suggestions_url": "https://suggestqueries.google.com/complete/search?client=chrome&hl=pt-BR&q=%s",
+      "favicon_url": "https://www.google.com.br/favicon.ico",
       "id": "100",
       "prepopulate_id": 0,
       "safe_for_autoreplace": false,
