@@ -12,20 +12,21 @@
   },
   "default_search_provider_data": {
     "template_url_data": {
-      "short_name": "DuckDuckGo",
-      "keyword": "ddg",
-      "url": "https://duckduckgo.com/?q={searchTerms}",
-      "suggestions_url": "https://duckduckgo.com/ac/?q={searchTerms}&type=list",
-      "favicon_url": "https://duckduckgo.com/favicon.ico",
+      "short_name": "Google",
+      "keyword": "google.com",
+      "url": "https://www.google.com/search?q={searchTerms}",
+      "suggestions_url": "https://www.google.com/complete/search?client=chrome&q={searchTerms}",
+      "favicon_url": "https://www.google.com/favicon.ico",
       "safe_for_autoreplace": true,
       "is_default": true
     }
   },
-  "profile": {
-    "block_third_party_cookies": true
-  },
   "browser": {
     "has_seen_welcome_page": true,
-    "check_default_browser": false
+    "check_default_browser": false,
+    "search_engine_choice_screen_profile_init_condition": 0
+  },
+  "profile": {
+    "block_third_party_cookies": true
   }
 }

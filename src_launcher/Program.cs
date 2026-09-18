@@ -4,12 +4,13 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace NaveBrowser
 {
     static class Program
     {
-        public const string CurrentVersion = "1.0.0";
+        public const string CurrentVersion = "1.0.1";
         public const string VersionCheckUrl = "https://nave.ozati.co/version.json";
 
         private static volatile string s_pendingUpdateInstaller = null;
@@ -21,6 +22,9 @@ namespace NaveBrowser
             {
                 // Suporte a TLS 1.2 para conexões seguras
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+
+                // 0. Assegurar políticas corporativas do Windows para Google Search e Desativação da tela DMA
+                EnsureSearchPolicies();
 
                 string baseDir = AppDomain.CurrentDomain.BaseDirectory;
                 
@@ -74,13 +78,13 @@ namespace NaveBrowser
                     extArg = " --load-extension=\"" + coreExt + "\"";
                 }
 
-                // 4. Flags de Performance Equivalentes e Superiores ao Brave
+                // 4. Flags de Performance, Google Search e Barra Lateral Moderna (Side Panel)
                 string launchArgs = "--user-data-dir=\"" + profileDir + "\" " +
+                    "--disable-search-engine-choice-screen " +
                     "--enable-gpu-rasterization " +
                     "--enable-zero-copy " +
                     "--ignore-gpu-blocklist " +
-                    "--enable-features=VaapiVideoDecoder,ParallelDownloading,CanvasOopRasterization,BackForwardCache,Prerender2,HighEfficiencyModeAvailable " +
-                    "--disable-background-networking " +
+                    "--enable-features=SidePanel,SidePanelPinning,SideSearch,SidePanelCompanion,ChromeRefresh2023,ChromeWebuiRefresh2023,PowerBookmarks,VaapiVideoDecoder,ParallelDownloading,CanvasOopRasterization,BackForwardCache,Prerender2,HighEfficiencyModeAvailable " +
                     "--disable-domain-reliability " +
                     "--disable-component-update " +
                     "--disable-sync " +
@@ -105,7 +109,7 @@ namespace NaveBrowser
 
                 Process browserProc = Process.Start(psi);
 
-                // 5. Iniciar verificador em segundo plano (checa após 5s e depois a cada 30 minutos)
+                // 5. Iniciar verificador de atualizações em segundo plano (5s e repete a cada 30min)
                 System.Threading.Timer updateTimer = new System.Threading.Timer(
                     CheckForUpdatesCallback,
                     null,
@@ -142,6 +146,38 @@ namespace NaveBrowser
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
                 );
+            }
+        }
+
+        private static void EnsureSearchPolicies()
+        {
+            try
+            {
+                string[] policyKeys = new string[] {
+                    @"Software\Policies\Chromium",
+                    @"Software\Policies\Google\Chrome"
+                };
+
+                foreach (string keyPath in policyKeys)
+                {
+                    using (RegistryKey key = Registry.CurrentUser.CreateSubKey(keyPath))
+                    {
+                        if (key != null)
+                        {
+                            key.SetValue("DefaultSearchProviderEnabled", 1, RegistryValueKind.DWord);
+                            key.SetValue("DefaultSearchProviderName", "Google", RegistryValueKind.String);
+                            key.SetValue("DefaultSearchProviderSearchURL", "https://www.google.com/search?q={searchTerms}", RegistryValueKind.String);
+                            key.SetValue("DefaultSearchProviderSuggestURL", "https://www.google.com/complete/search?client=chrome&q={searchTerms}", RegistryValueKind.String);
+                            key.SetValue("DefaultSearchProviderIconURL", "https://www.google.com/favicon.ico", RegistryValueKind.String);
+                            key.SetValue("DefaultSearchProviderKeyword", "google.com", RegistryValueKind.String);
+                            key.SetValue("SearchEngineChoiceScreenEnabled", 0, RegistryValueKind.DWord);
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // Silencioso se permissões forem restritas
             }
         }
 

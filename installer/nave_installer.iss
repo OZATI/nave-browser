@@ -2,7 +2,7 @@
 ; Compilador oficial para gerar o instalador Nave-Setup.exe com registro de navegador padrão no Windows.
 
 #define MyAppName "Nave"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.0.1"
 #define MyAppPublisher "OZATI"
 #define MyAppURL "https://nave.ozati.co"
 #define MyAppExeName "Nave.exe"
@@ -64,6 +64,23 @@ Root: HKCU; Subkey: "Software\RegisteredApplications"; ValueType: string; ValueN
 Root: HKCU; Subkey: "Software\Classes\NaveHTML"; ValueType: string; ValueData: "Nave HTML Document"; Flags: uninsdeletekey
 Root: HKCU; Subkey: "Software\Classes\NaveHTML\DefaultIcon"; ValueType: string; ValueData: "{app}\assets\nave.ico,0"
 Root: HKCU; Subkey: "Software\Classes\NaveHTML\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
+
+; Configurar Google como Mecanismo de Busca Oficial e Desativar Escolha DMA
+Root: HKCU; Subkey: "Software\Policies\Chromium"; ValueType: dword; ValueName: "DefaultSearchProviderEnabled"; ValueData: "1"; Flags: uninsdeletekeyifempty
+Root: HKCU; Subkey: "Software\Policies\Chromium"; ValueType: string; ValueName: "DefaultSearchProviderName"; ValueData: "Google"; Flags: uninsdeletekeyifempty
+Root: HKCU; Subkey: "Software\Policies\Chromium"; ValueType: string; ValueName: "DefaultSearchProviderSearchURL"; ValueData: "https://www.google.com/search?q={{searchTerms}"; Flags: uninsdeletekeyifempty
+Root: HKCU; Subkey: "Software\Policies\Chromium"; ValueType: string; ValueName: "DefaultSearchProviderSuggestURL"; ValueData: "https://www.google.com/complete/search?client=chrome&q={{searchTerms}"; Flags: uninsdeletekeyifempty
+Root: HKCU; Subkey: "Software\Policies\Chromium"; ValueType: string; ValueName: "DefaultSearchProviderIconURL"; ValueData: "https://www.google.com/favicon.ico"; Flags: uninsdeletekeyifempty
+Root: HKCU; Subkey: "Software\Policies\Chromium"; ValueType: string; ValueName: "DefaultSearchProviderKeyword"; ValueData: "google.com"; Flags: uninsdeletekeyifempty
+Root: HKCU; Subkey: "Software\Policies\Chromium"; ValueType: dword; ValueName: "SearchEngineChoiceScreenEnabled"; ValueData: "0"; Flags: uninsdeletekeyifempty
+
+Root: HKCU; Subkey: "Software\Policies\Google\Chrome"; ValueType: dword; ValueName: "DefaultSearchProviderEnabled"; ValueData: "1"; Flags: uninsdeletekeyifempty
+Root: HKCU; Subkey: "Software\Policies\Google\Chrome"; ValueType: string; ValueName: "DefaultSearchProviderName"; ValueData: "Google"; Flags: uninsdeletekeyifempty
+Root: HKCU; Subkey: "Software\Policies\Google\Chrome"; ValueType: string; ValueName: "DefaultSearchProviderSearchURL"; ValueData: "https://www.google.com/search?q={{searchTerms}"; Flags: uninsdeletekeyifempty
+Root: HKCU; Subkey: "Software\Policies\Google\Chrome"; ValueType: string; ValueName: "DefaultSearchProviderSuggestURL"; ValueData: "https://www.google.com/complete/search?client=chrome&q={{searchTerms}"; Flags: uninsdeletekeyifempty
+Root: HKCU; Subkey: "Software\Policies\Google\Chrome"; ValueType: string; ValueName: "DefaultSearchProviderIconURL"; ValueData: "https://www.google.com/favicon.ico"; Flags: uninsdeletekeyifempty
+Root: HKCU; Subkey: "Software\Policies\Google\Chrome"; ValueType: string; ValueName: "DefaultSearchProviderKeyword"; ValueData: "google.com"; Flags: uninsdeletekeyifempty
+Root: HKCU; Subkey: "Software\Policies\Google\Chrome"; ValueType: dword; ValueName: "SearchEngineChoiceScreenEnabled"; ValueData: "0"; Flags: uninsdeletekeyifempty
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
