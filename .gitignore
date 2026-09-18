@@ -12,3 +12,6 @@ profile_data/
 Thumbs.db
 Desktop.ini
 .DS_Store
+
+extensions/**/_metadata/
+extensions/**/*.pak
