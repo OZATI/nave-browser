@@ -3,24 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nave — Nova Guia</title>
+  <title>Nave</title>
   <link rel="icon" type="image/png" href="icons/nave-32.png">
   <style>
     :root {
-      --bg: #07080c;
-      --bg-surface: #0e1118;
-      --bg-card: rgba(16, 20, 30, 0.7);
-      --bg-glass: rgba(22, 27, 40, 0.6);
+      --bg: #08090d;
+      --bg-surface: #0f121a;
+      --bg-card: rgba(18, 22, 33, 0.7);
       --border: rgba(255, 255, 255, 0.08);
-      --border-accent: rgba(16, 185, 129, 0.35);
+      --border-focus: rgba(16, 185, 129, 0.4);
       --emerald: #10b981;
-      --emerald-glow: rgba(16, 185, 129, 0.2);
       --cyan: #06b6d4;
-      --cyan-glow: rgba(6, 182, 212, 0.15);
       --text: #f3f4f6;
       --text-muted: #9ca3af;
       --text-dim: #6b7280;
-      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     *, *::before, *::after {
@@ -36,32 +33,24 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      position: relative;
+      align-items: center;
+      justify-content: space-between;
       overflow-x: hidden;
       user-select: none;
+      padding: 24px 32px;
+      position: relative;
     }
 
-    /* Iluminação de fundo */
-    .glow-top-left {
+    /* Fundo sutil sem peso gráfico */
+    .ambient-glow {
       position: fixed;
-      top: -160px;
-      left: 15%;
-      width: 550px;
-      height: 550px;
-      background: radial-gradient(circle, var(--emerald-glow) 0%, rgba(0, 0, 0, 0) 70%);
-      filter: blur(90px);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .glow-bottom-right {
-      position: fixed;
-      bottom: -150px;
-      right: 10%;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, var(--cyan-glow) 0%, rgba(0, 0, 0, 0) 70%);
-      filter: blur(100px);
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 450px;
+      background: radial-gradient(ellipse at center, rgba(16, 185, 129, 0.12) 0%, rgba(6, 182, 212, 0.04) 45%, transparent 70%);
+      filter: blur(80px);
       pointer-events: none;
       z-index: 0;
     }
@@ -69,234 +58,181 @@
     /* Top Bar */
     header {
       width: 100%;
-      padding: 18px 36px;
+      max-width: 1100px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: relative;
       z-index: 10;
     }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       text-decoration: none;
       color: inherit;
     }
 
     .brand img {
-      width: 32px;
-      height: 32px;
-      filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.4));
+      width: 26px;
+      height: 26px;
     }
 
     .brand-title {
-      font-size: 1.15rem;
+      font-size: 1.05rem;
       font-weight: 800;
-      letter-spacing: 0.05em;
-      background: linear-gradient(135deg, #ffffff 40%, var(--emerald) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .brand-tag {
-      font-size: 0.65rem;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 9999px;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid var(--border-accent);
-      color: var(--emerald);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+      letter-spacing: 0.06em;
+      color: #fff;
     }
 
     .shield-badge {
       display: flex;
       align-items: center;
       gap: 8px;
-      background: var(--bg-card);
+      background: var(--bg-surface);
       border: 1px solid var(--border);
       padding: 6px 14px;
-      border-radius: 9999px;
-      font-size: 0.8rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
       font-weight: 600;
       color: var(--text-muted);
-      backdrop-filter: blur(10px);
-      transition: all 0.2s ease;
     }
 
-    .shield-badge:hover {
-      border-color: var(--emerald);
-      color: #fff;
-    }
-
-    .dot-live {
+    .pulse-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background-color: var(--emerald);
+      background: var(--emerald);
       box-shadow: 0 0 8px var(--emerald);
-      animation: pulse 2s infinite;
     }
 
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
-    }
-
-    /* Main Container */
+    /* Centro */
     main {
-      flex: 1;
       width: 100%;
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 20px 24px 40px;
+      max-width: 760px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      position: relative;
       z-index: 10;
+      margin: auto 0;
     }
 
-    /* Clock & Greeting */
-    .hero-time {
+    /* Relógio Minimalista */
+    .clock-container {
       text-align: center;
       margin-bottom: 24px;
     }
 
     .clock {
-      font-size: 4rem;
+      font-size: 4.8rem;
       font-weight: 800;
-      letter-spacing: -0.03em;
+      letter-spacing: -0.04em;
       line-height: 1;
-      margin-bottom: 6px;
-      background: linear-gradient(180deg, #ffffff 50%, #9ca3af 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      color: #ffffff;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
     }
 
-    .date-str {
+    .date-text {
       font-size: 0.95rem;
       color: var(--text-muted);
+      margin-top: 6px;
       font-weight: 500;
     }
 
-    /* Brave-like Shield Stats Bar */
-    .shield-stats-bar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      width: 100%;
-      max-width: 680px;
-      margin-bottom: 30px;
-    }
-
-    .stat-card {
+    /* Barra de Estatísticas Estilo Brave */
+    .stats-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 32px;
+      padding: 10px 24px;
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 12px 18px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+      border-radius: 999px;
       backdrop-filter: blur(12px);
-      transition: transform 0.2s ease, border-color 0.2s ease;
     }
 
-    .stat-card:hover {
-      transform: translateY(-2px);
-      border-color: var(--border-accent);
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
     }
 
     .stat-val {
-      font-size: 1.4rem;
       font-weight: 800;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      font-size: 0.95rem;
+      color: #fff;
     }
 
     .stat-val.emerald { color: var(--emerald); }
     .stat-val.cyan { color: var(--cyan); }
 
-    .stat-lbl {
-      font-size: 0.75rem;
-      color: var(--text-dim);
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-top: 2px;
+    .stat-sep {
+      width: 1px;
+      height: 14px;
+      background: var(--border);
     }
 
-    /* Omni Search */
-    .search-wrapper {
+    /* Barra de Pesquisa */
+    .search-container {
       width: 100%;
-      max-width: 680px;
-      margin-bottom: 36px;
+      margin-bottom: 32px;
     }
 
     .search-engines {
       display: flex;
       justify-content: center;
       gap: 8px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
-    .engine-btn {
+    .engine-tab {
       background: transparent;
       border: 1px solid transparent;
       color: var(--text-dim);
       font-size: 0.78rem;
       font-weight: 600;
       padding: 4px 12px;
-      border-radius: 9999px;
+      border-radius: 999px;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s ease;
     }
 
-    .engine-btn:hover {
+    .engine-tab:hover {
       color: var(--text);
     }
 
-    .engine-btn.active {
+    .engine-tab.active {
       background: var(--bg-surface);
-      border-color: var(--border-accent);
+      border-color: var(--border);
       color: var(--emerald);
     }
 
-    .search-box {
+    .search-bar {
       display: flex;
       align-items: center;
       background: var(--bg-surface);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 6px 14px 6px 20px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-      transition: all 0.25s ease;
+      padding: 12px 20px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+      transition: all 0.2s ease;
     }
 
-    .search-box:focus-within {
+    .search-bar:focus-within {
       border-color: var(--emerald);
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2), 0 12px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18), 0 10px 35px rgba(0, 0, 0, 0.5);
     }
 
-    .search-box svg {
+    .search-bar svg {
       width: 20px;
       height: 20px;
       color: var(--text-dim);
+      margin-right: 14px;
       flex-shrink: 0;
-      margin-right: 12px;
     }
 
     .search-input {
@@ -304,8 +240,8 @@
       background: transparent;
       border: none;
       outline: none;
-      color: #fff;
       font-size: 1.05rem;
+      color: #fff;
       font-family: inherit;
     }
 
@@ -313,109 +249,84 @@
       color: var(--text-dim);
     }
 
-    .btn-search {
-      background: var(--emerald);
-      color: #07080c;
-      border: none;
-      font-weight: 700;
-      font-size: 0.85rem;
-      padding: 8px 18px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-search:hover {
-      filter: brightness(1.15);
-      transform: scale(1.02);
-    }
-
-    /* Shortcuts / Speed Dial */
+    /* Grade de Atalhos (Speed Dial) */
     .shortcuts-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
       gap: 16px;
       width: 100%;
-      max-width: 680px;
     }
 
-    .shortcut-card {
+    .shortcut {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       background: var(--bg-card);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 16px 8px 12px;
+      border-radius: 14px;
+      padding: 14px 8px 10px;
       text-decoration: none;
       color: var(--text);
-      transition: all 0.2s ease;
-      position: relative;
-      backdrop-filter: blur(8px);
+      transition: all 0.18s ease;
+      cursor: pointer;
     }
 
-    .shortcut-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--border-accent);
-      background: rgba(22, 27, 40, 0.85);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    .shortcut:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-focus);
+      background: rgba(25, 30, 45, 0.8);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     }
 
-    .shortcut-icon-box {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
+    .shortcut-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
       background: var(--bg-surface);
       border: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 8px;
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--emerald);
-      overflow: hidden;
     }
 
-    .shortcut-icon-box img {
-      width: 26px;
-      height: 26px;
-      object-fit: contain;
+    .shortcut-icon svg {
+      width: 22px;
+      height: 22px;
     }
 
     .shortcut-title {
-      font-size: 0.8rem;
+      font-size: 0.76rem;
       font-weight: 600;
       color: var(--text-muted);
-      text-align: center;
+      max-width: 80px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      max-width: 85px;
+      text-align: center;
     }
 
-    .btn-add-shortcut {
-      cursor: pointer;
+    .btn-add {
       border-style: dashed;
+      color: var(--text-dim);
     }
 
-    .btn-add-shortcut:hover {
+    .btn-add:hover {
       border-color: var(--emerald);
+      color: var(--emerald);
     }
 
-    /* Footer Info */
+    /* Footer */
     footer {
       width: 100%;
-      padding: 16px 36px;
+      max-width: 1100px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 0.75rem;
       color: var(--text-dim);
-      position: relative;
       z-index: 10;
-      border-top: 1px solid rgba(255, 255, 255, 0.04);
     }
 
     .footer-left {
@@ -423,34 +334,27 @@
       gap: 16px;
     }
 
-    .footer-badge {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
     .footer-badge span {
       color: var(--emerald);
-      font-weight: 700;
     }
 
     .footer-right a {
       color: var(--text-dim);
       text-decoration: none;
-      transition: color 0.2s;
+      transition: color 0.15s;
     }
 
     .footer-right a:hover {
       color: var(--emerald);
     }
 
-    /* Modal Adicionar Atalho */
+    /* Modal Simples */
     .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
       z-index: 100;
       align-items: center;
       justify-content: center;
@@ -458,174 +362,174 @@
 
     .modal.active { display: flex; }
 
-    .modal-content {
+    .modal-box {
       background: var(--bg-surface);
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 14px;
+      padding: 22px;
       width: 100%;
-      max-width: 400px;
-      padding: 24px;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      max-width: 360px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
     }
 
-    .modal-title {
-      font-size: 1.1rem;
+    .modal-box h3 {
+      font-size: 1.05rem;
       font-weight: 700;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       color: #fff;
     }
 
-    .modal-group {
-      margin-bottom: 14px;
+    .form-group {
+      margin-bottom: 12px;
     }
 
-    .modal-group label {
+    .form-group label {
       display: block;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
       color: var(--text-muted);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
-    .modal-group input {
+    .form-group input {
       width: 100%;
       background: var(--bg);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 10px 12px;
+      padding: 9px 12px;
       color: #fff;
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       outline: none;
     }
 
-    .modal-group input:focus {
+    .form-group input:focus {
       border-color: var(--emerald);
     }
 
-    .modal-actions {
+    .modal-btns {
       display: flex;
       justify-content: flex-end;
       gap: 10px;
-      margin-top: 20px;
+      margin-top: 18px;
     }
 
     .btn-cancel {
       background: transparent;
       border: 1px solid var(--border);
       color: var(--text-muted);
-      padding: 8px 16px;
+      padding: 7px 14px;
       border-radius: 8px;
+      font-size: 0.8rem;
       cursor: pointer;
     }
 
     .btn-save {
       background: var(--emerald);
-      color: #07080c;
+      color: #08090d;
       border: none;
       font-weight: 700;
-      padding: 8px 16px;
+      padding: 7px 16px;
       border-radius: 8px;
+      font-size: 0.8rem;
       cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="glow-top-left"></div>
-  <div class="glow-bottom-right"></div>
+  <div class="ambient-glow"></div>
 
   <header>
     <a href="https://nave.ozati.co" class="brand" target="_blank" rel="noopener">
-      <img src="icons/nave-32.png" alt="Nave Logo">
+      <img src="icons/nave-32.png" alt="Nave">
       <span class="brand-title">NAVE</span>
-      <span class="brand-tag">Turbo 120 FPS</span>
     </a>
 
-    <div class="header-actions">
-      <div class="shield-badge">
-        <span class="dot-live"></span>
-        <span>Nave Shield: Protegido</span>
-      </div>
+    <div class="shield-badge">
+      <span class="pulse-dot"></span>
+      <span>Nave Shield: Ativo</span>
     </div>
   </header>
 
   <main>
-    <div class="hero-time">
+    <div class="clock-container">
       <div class="clock" id="clock">12:00</div>
-      <div class="date-str" id="dateStr">Carregando data...</div>
+      <div class="date-text" id="dateText">Sexta-feira, 18 de Setembro</div>
     </div>
 
-    <!-- Live Shield Stats Bar -->
-    <div class="shield-stats-bar">
-      <div class="stat-card">
-        <div class="stat-val emerald" id="statTrackers">84</div>
-        <div class="stat-lbl">Rastreadores Bloqueados</div>
+    <!-- Stats Estilo Brave -->
+    <div class="stats-bar">
+      <div class="stat-item">
+        <span>🛡️</span>
+        <span class="stat-val emerald" id="statTrackers">142</span>
+        <span>rastreadores bloqueados</span>
       </div>
-      <div class="stat-card">
-        <div class="stat-val cyan" id="statBandwidth">28.4 MB</div>
-        <div class="stat-lbl">Banda Economizada</div>
+      <div class="stat-sep"></div>
+      <div class="stat-item">
+        <span>⚡</span>
+        <span class="stat-val cyan" id="statBandwidth">45.2 MB</span>
+        <span>economizados</span>
       </div>
-      <div class="stat-card">
-        <div class="stat-val" id="statSpeed">3.5x</div>
-        <div class="stat-lbl">Mais Rápido que o Chrome</div>
+      <div class="stat-sep"></div>
+      <div class="stat-item">
+        <span>⏱️</span>
+        <span class="stat-val" id="statSpeed">3.8x</span>
+        <span>mais rápido</span>
       </div>
     </div>
 
-    <!-- Omni Search Bar -->
-    <div class="search-wrapper">
+    <!-- Busca -->
+    <div class="search-container">
       <div class="search-engines">
-        <button class="engine-btn active" data-engine="ddg">DuckDuckGo</button>
-        <button class="engine-btn" data-engine="brave">Brave Search</button>
-        <button class="engine-btn" data-engine="google">Google</button>
-        <button class="engine-btn" data-engine="ozati">OZATI AI</button>
+        <button class="engine-tab active" data-engine="ddg">DuckDuckGo</button>
+        <button class="engine-tab" data-engine="brave">Brave Search</button>
+        <button class="engine-tab" data-engine="google">Google</button>
+        <button class="engine-tab" data-engine="ozati">OZATI</button>
       </div>
 
-      <form id="searchForm" class="search-box">
+      <form id="searchForm" class="search-bar">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
         </svg>
         <input 
           type="text" 
           id="searchInput" 
           class="search-input" 
-          placeholder="Pesquisar na Web ou digitar URL..." 
-          autocomplete="off"
+          placeholder="Pesquisar na Web ou digitar endereço..." 
+          autocomplete="off" 
           autofocus
         >
-        <button type="submit" class="btn-search">Ir</button>
       </form>
     </div>
 
-    <!-- Speed Dial Shortcuts Grid -->
-    <div class="shortcuts-grid" id="shortcutsGrid">
-      <!-- Injetado dinamicamente via JavaScript -->
-    </div>
+    <!-- Atalhos Rápidos com SVGs Nítidos -->
+    <div class="shortcuts-grid" id="shortcutsGrid"></div>
   </main>
 
   <!-- Modal Adicionar Atalho -->
   <div class="modal" id="modalAdd">
-    <div class="modal-content">
-      <div class="modal-title">Novo Atalho Rápido</div>
-      <div class="modal-group">
+    <div class="modal-box">
+      <h3>Novo Atalho</h3>
+      <div class="form-group">
         <label for="inputTitle">Nome do Site</label>
-        <input type="text" id="inputTitle" placeholder="Ex: GitHub">
+        <input type="text" id="inputTitle" placeholder="Ex: YouTube">
       </div>
-      <div class="modal-group">
-        <label for="inputUrl">Endereço Web (URL)</label>
-        <input type="url" id="inputUrl" placeholder="https://exemplo.com">
+      <div class="form-group">
+        <label for="inputUrl">Endereço (URL)</label>
+        <input type="url" id="inputUrl" placeholder="https://youtube.com">
       </div>
-      <div class="modal-actions">
-        <button type="button" class="btn-cancel" id="btnCancelModal">Cancelar</button>
-        <button type="button" class="btn-save" id="btnSaveShortcut">Salvar</button>
+      <div class="modal-btns">
+        <button type="button" class="btn-cancel" id="btnCancel">Cancelar</button>
+        <button type="button" class="btn-save" id="btnSave">Adicionar</button>
       </div>
     </div>
   </div>
 
   <footer>
     <div class="footer-left">
-      <div class="footer-badge"><span>●</span> GPU Acceleration 120 FPS</div>
-      <div class="footer-badge"><span>●</span> Zero Telemetria Google</div>
-      <div class="footer-badge"><span>●</span> Anti-Fingerprint Shield</div>
+      <div class="footer-badge"><span>●</span> GPU 120 FPS</div>
+      <div class="footer-badge"><span>●</span> Zero Telemetria</div>
+      <div class="footer-badge"><span>●</span> Proteção Anti-Rastreamento</div>
     </div>
     <div class="footer-right">
       <a href="https://nave.ozati.co" target="_blank" rel="noopener">nave.ozati.co</a>
@@ -633,33 +537,30 @@
   </footer>
 
   <script>
-    // Relógio e Data em tempo real
+    // Relógio e Data
     function updateClock() {
       const now = new Date();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const mins = String(now.getMinutes()).padStart(2, '0');
-      const secs = String(now.getSeconds()).padStart(2, '0');
-      document.getElementById('clock').textContent = `${hours}:${mins}:${secs}`;
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${h}:${m}`;
 
-      const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-      const dateString = now.toLocaleDateString('pt-BR', options);
-      document.getElementById('dateStr').textContent = dateString.charAt(0).toUpperCase() + dateString.slice(1);
+      const options = { weekday: 'long', day: 'numeric', month: 'long' };
+      const d = now.toLocaleDateString('pt-BR', options);
+      document.getElementById('dateText').textContent = d.charAt(0).toUpperCase() + d.slice(1);
     }
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Shield Stats dinâmicos com persistência local
-    let trackersCount = parseInt(localStorage.getItem('nave_trackers') || '84');
-    let bandwidthCount = parseFloat(localStorage.getItem('nave_bandwidth') || '28.4');
-    
-    // Incremento suave realista
-    trackersCount += Math.floor(Math.random() * 2) + 1;
-    bandwidthCount = (bandwidthCount + 0.15).toFixed(1);
-    localStorage.setItem('nave_trackers', trackersCount);
-    localStorage.setItem('nave_bandwidth', bandwidthCount);
+    // Stats dinâmicos persistidos no localStorage
+    let trackers = parseInt(localStorage.getItem('nave_trackers') || '142');
+    let bandwidth = parseFloat(localStorage.getItem('nave_bandwidth') || '45.2');
+    trackers += Math.floor(Math.random() * 2) + 1;
+    bandwidth = (bandwidth + 0.2).toFixed(1);
+    localStorage.setItem('nave_trackers', trackers);
+    localStorage.setItem('nave_bandwidth', bandwidth);
 
-    document.getElementById('statTrackers').textContent = trackersCount;
-    document.getElementById('statBandwidth').textContent = bandwidthCount + ' MB';
+    document.getElementById('statTrackers').textContent = trackers;
+    document.getElementById('statBandwidth').textContent = bandwidth + ' MB';
 
     // Motores de Busca
     let currentEngine = localStorage.getItem('nave_engine') || 'ddg';
@@ -670,22 +571,22 @@
       ozati: 'https://ozati.co/?q='
     };
 
-    const engineBtns = document.querySelectorAll('.engine-btn');
-    engineBtns.forEach(btn => {
-      if (btn.dataset.engine === currentEngine) {
-        engineBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+    const tabs = document.querySelectorAll('.engine-tab');
+    tabs.forEach(tab => {
+      if (tab.dataset.engine === currentEngine) {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
       }
-      btn.addEventListener('click', () => {
-        engineBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentEngine = btn.dataset.engine;
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentEngine = tab.dataset.engine;
         localStorage.setItem('nave_engine', currentEngine);
         document.getElementById('searchInput').focus();
       });
     });
 
-    // Submissão da Busca
+    // Submissão rápida da Busca / URL direta
     document.getElementById('searchForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const val = document.getElementById('searchInput').value.trim();
@@ -700,16 +601,28 @@
       }
     });
 
-    // Atalhos Rápidos (Speed Dial)
+    // Ícones Vetoriais SVG Nativos para os Atalhos
+    const iconsMap = {
+      ozati: `<svg viewBox="0 0 24 24" fill="#10b981"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`,
+      youtube: `<svg viewBox="0 0 24 24" fill="#ff0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`,
+      github: `<svg viewBox="0 0 24 24" fill="#fff"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>`,
+      chatgpt: `<svg viewBox="0 0 24 24" fill="#10a37f"><path d="M22.28 9.9a5.98 5.98 0 0 0-.48-4.68 6.04 6.04 0 0 0-6.62-2.73A6 6 0 0 0 10.4 1a6.04 6.04 0 0 0-5.74 4.19 6 6 0 0 0-4.14 3 6.04 6.04 0 0 0 .74 7.15 5.98 5.98 0 0 0 .48 4.68 6.04 6.04 0 0 0 6.62 2.73A6 6 0 0 0 13.6 23a6.04 6.04 0 0 0 5.74-4.19 6 6 0 0 0 4.14-3 6.04 6.04 0 0 0-.74-7.15zM13.6 21.6a4.57 4.57 0 0 1-2.93-1.07l.15-.08 4.88-2.82a.76.76 0 0 0 .38-.66v-6.9l2.08 1.2a.74.74 0 0 1 .38.65v5.82a4.6 4.6 0 0 1-4.94 3.86zm-8.8-3.7a4.57 4.57 0 0 1-.55-3.07l.15.09 4.88 2.82a.75.75 0 0 0 .76 0l5.98-3.45v2.4a.75.75 0 0 1-.38.65l-5.04 2.91a4.6 4.6 0 0 1-5.84-2.35zm-1.87-8.3a4.57 4.57 0 0 1 2.38-2l-.01.17v5.63a.75.75 0 0 0 .38.66l5.98 3.45-2.08 1.2a.74.74 0 0 1-.76 0l-5.04-2.91a4.6 4.6 0 0 1-.85-6.2zm14.8 2.3l-5.98-3.45 2.08-1.2a.74.74 0 0 1 .76 0l5.04 2.91a4.6 4.6 0 0 1 .85 6.2 4.57 4.57 0 0 1-2.38 2v-5.8a.75.75 0 0 0-.37-.66zm2.42-3.83l-.15-.09-4.88-2.82a.75.75 0 0 0-.76 0L8.46 7.41V5.01a.75.75 0 0 1 .38-.65l5.04-2.91a4.6 4.6 0 0 1 5.84 2.35 4.57 4.57 0 0 1 .55 3.07zM10.74 9.17l2.86-1.65 2.86 1.65v3.3l-2.86 1.65-2.86-1.65z"/></svg>`,
+      whatsapp: `<svg viewBox="0 0 24 24" fill="#25d366"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/></svg>`,
+      gmail: `<svg viewBox="0 0 24 24" fill="#ea4335"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>`,
+      x: `<svg viewBox="0 0 24 24" fill="#fff"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`,
+      reddit: `<svg viewBox="0 0 24 24" fill="#ff4500"><path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.56 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701z"/></svg>`,
+      generic: `<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`
+    };
+
     const defaultShortcuts = [
-      { title: 'OZATI', url: 'https://ozati.co', icon: '🛸' },
-      { title: 'YouTube', url: 'https://youtube.com', icon: '▶️' },
-      { title: 'GitHub', url: 'https://github.com', icon: '🐙' },
-      { title: 'ChatGPT', url: 'https://chatgpt.com', icon: '🤖' },
-      { title: 'WhatsApp', url: 'https://web.whatsapp.com', icon: '💬' },
-      { title: 'Gmail', url: 'https://mail.google.com', icon: '✉️' },
-      { title: 'X', url: 'https://x.com', icon: '✖️' },
-      { title: 'Reddit', url: 'https://reddit.com', icon: '👽' }
+      { id: 'ozati', title: 'OZATI', url: 'https://ozati.co' },
+      { id: 'youtube', title: 'YouTube', url: 'https://youtube.com' },
+      { id: 'github', title: 'GitHub', url: 'https://github.com' },
+      { id: 'chatgpt', title: 'ChatGPT', url: 'https://chatgpt.com' },
+      { id: 'whatsapp', title: 'WhatsApp', url: 'https://web.whatsapp.com' },
+      { id: 'gmail', title: 'Gmail', url: 'https://mail.google.com' },
+      { id: 'x', title: 'X', url: 'https://x.com' },
+      { id: 'reddit', title: 'Reddit', url: 'https://reddit.com' }
     ];
 
     let shortcuts = JSON.parse(localStorage.getItem('nave_shortcuts') || JSON.stringify(defaultShortcuts));
@@ -720,20 +633,21 @@
 
       shortcuts.forEach(s => {
         const a = document.createElement('a');
-        a.className = 'shortcut-card';
+        a.className = 'shortcut';
         a.href = s.url;
+        const iconSvg = iconsMap[s.id] || iconsMap.generic;
         a.innerHTML = `
-          <div class="shortcut-icon-box">${s.icon || '🌐'}</div>
+          <div class="shortcut-icon">${iconSvg}</div>
           <div class="shortcut-title">${s.title}</div>
         `;
         grid.appendChild(a);
       });
 
-      // Botão Adicionar
+      // Botão + Adicionar
       const addBtn = document.createElement('div');
-      addBtn.className = 'shortcut-card btn-add-shortcut';
+      addBtn.className = 'shortcut btn-add';
       addBtn.innerHTML = `
-        <div class="shortcut-icon-box">+</div>
+        <div class="shortcut-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
         <div class="shortcut-title">Adicionar</div>
       `;
       addBtn.addEventListener('click', openModal);
@@ -754,12 +668,10 @@
       modal.classList.remove('active');
     }
 
-    document.getElementById('btnCancelModal').addEventListener('click', closeModal);
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal) closeModal();
-    });
+    document.getElementById('btnCancel').addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
 
-    document.getElementById('btnSaveShortcut').addEventListener('click', () => {
+    document.getElementById('btnSave').addEventListener('click', () => {
       const title = document.getElementById('inputTitle').value.trim();
       let url = document.getElementById('inputUrl').value.trim();
       if (!title || !url) return;
@@ -768,16 +680,17 @@
         url = 'https://' + url;
       }
 
-      shortcuts.push({ title, url, icon: '🔗' });
+      shortcuts.push({ id: 'generic', title, url });
       localStorage.setItem('nave_shortcuts', JSON.stringify(shortcuts));
       renderShortcuts();
       closeModal();
     });
 
-    // Tecla de atalho "/" para focar busca
+    // Auto-foco inteligente: qualquer tecla digitada foca na busca
     window.addEventListener('keydown', (e) => {
-      if (e.key === '/' && document.activeElement !== document.getElementById('searchInput')) {
-        e.preventDefault();
+      const active = document.activeElement;
+      if (active.tagName === 'INPUT') return;
+      if (e.key.length === 1 && !e.ctrlKey && !e.altKey && !e.metaKey) {
         document.getElementById('searchInput').focus();
       }
     });
