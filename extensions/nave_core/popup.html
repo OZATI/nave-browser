@@ -188,6 +188,34 @@
       transform: translateX(16px);
     }
 
+    .actions {
+      margin-top: 14px;
+    }
+
+    .btn-action {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-action:hover {
+      border-color: #ffffff;
+      background: #1a1a1a;
+      color: #ffffff;
+    }
+
     .footer {
       margin-top: 12px;
       text-align: center;
@@ -204,7 +232,7 @@
       </svg>
       <span class="brand-title">ozati™ nave</span>
     </div>
-    <span class="badge">v1.0.1</span>
+    <span class="badge">v1.0.0</span>
   </div>
 
   <div class="status-card">
@@ -242,8 +270,15 @@
     </label>
   </div>
 
+  <div class="actions">
+    <button class="btn-action" id="btnUpdate">
+      <span>🔄</span>
+      <span id="updateText">Verificar Atualizações (v1.0.0)</span>
+    </button>
+  </div>
+
   <div class="footer">
-    Nave Browser • OZATI Tecnologia
+    Nave Browser • <a href="https://nave.ozati.co" target="_blank" style="color: var(--text-muted); text-decoration: none;">nave.ozati.co</a>
   </div>
 
   <script>
@@ -251,6 +286,29 @@
     const bandwidth = localStorage.getItem('nave_bandwidth') || '45.2';
     document.getElementById('trackersCount').textContent = trackers;
     document.getElementById('dataSaved').textContent = bandwidth + ' MB';
+
+    document.getElementById('btnUpdate').addEventListener('click', async () => {
+      const text = document.getElementById('updateText');
+      text.textContent = 'Verificando atualizações...';
+      try {
+        const res = await fetch('https://api.github.com/repos/OZATI/nave-browser/releases/latest');
+        if (res.ok) {
+          const data = await res.json();
+          const latestTag = data.tag_name || 'v1.0.0';
+          if (latestTag === 'v1.0.0') {
+            text.textContent = 'Nave Atualizado (v1.0.0) ✓';
+            setTimeout(() => { text.textContent = 'Verificar Atualizações (v1.0.0)'; }, 3500);
+          } else {
+            text.textContent = `Nova versão disponível: ${latestTag} ➔`;
+            window.open('https://nave.ozati.co/#download', '_blank');
+          }
+        } else {
+          window.open('https://nave.ozati.co/#download', '_blank');
+        }
+      } catch (e) {
+        window.open('https://nave.ozati.co/#download', '_blank');
+      }
+    });
   </script>
 </body>
 </html>

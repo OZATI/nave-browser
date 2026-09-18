@@ -97,6 +97,26 @@
       color: var(--text-muted);
     }
 
+    .version-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 0.72rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .version-badge:hover {
+      border-color: #ffffff;
+      color: #ffffff;
+    }
+
     .pulse-dot {
       width: 6px;
       height: 6px;
@@ -313,9 +333,16 @@
       </div>
     </a>
 
-    <div class="shield-badge">
-      <span class="pulse-dot"></span>
-      <span>Nave Shield Ativo</span>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <a href="https://nave.ozati.co/#download" target="_blank" class="version-badge" title="Verificar atualizações do Nave">
+        <span>v1.0.0</span>
+        <span style="color: var(--text-dim);">•</span>
+        <span>Atualizar</span>
+      </a>
+      <div class="shield-badge">
+        <span class="pulse-dot"></span>
+        <span>Nave Shield Ativo</span>
+      </div>
     </div>
   </header>
 
@@ -362,7 +389,11 @@
       <div class="footer-badge">120 FPS GPU</div>
       <div class="footer-badge">Zero Telemetria</div>
     </div>
-    <div class="footer-right">
+    <div class="footer-right" style="display: flex; gap: 16px; align-items: center;">
+      <a href="https://nave.ozati.co/#download" target="_blank" style="display: flex; align-items: center; gap: 6px;">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span>Atualizações</span>
+      </a>
       <a href="https://nave.ozati.co" target="_blank">nave.ozati.co</a>
     </div>
   </footer>
