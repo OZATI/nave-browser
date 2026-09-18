@@ -1,5 +1,5 @@
-; Inno Setup Script para o Nave Browser
-; Compilador oficial para gerar o instalador Nave-Setup.exe com registro de navegador padrão no Windows.
+﻿; Inno Setup Script para o Nave Browser
+; Compilador oficial para gerar o instalador Nave-Setup.exe com registro de navegador padrÃ£o no Windows.
 
 #define MyAppName "Nave"
 #define MyAppVersion "1.0.1"
@@ -37,6 +37,8 @@ Source: "..\bin\engine\*"; DestDir: "{app}\bin\engine"; Flags: ignoreversion rec
 Source: "..\extensions\*"; DestDir: "{app}\extensions"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "..\assets\nave.ico"; DestDir: "{app}\assets"; Flags: ignoreversion
 Source: "..\assets\initial_preferences.json"; DestDir: "{app}\bin\engine"; DestName: "initial_preferences"; Flags: ignoreversion
+Source: "..\bin\sqlite3.exe"; DestDir: "{app}\bin"; Flags: ignoreversion
+Source: "..\bin\rcedit-x64.exe"; DestDir: "{app}\bin"; Flags: ignoreversion
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\assets\nave.ico"
@@ -48,8 +50,8 @@ Root: HKCU; Subkey: "Software\Clients\StartMenuInternet\Nave"; ValueType: string
 Root: HKCU; Subkey: "Software\Clients\StartMenuInternet\Nave\DefaultIcon"; ValueType: string; ValueData: "{app}\assets\nave.ico,0"
 Root: HKCU; Subkey: "Software\Clients\StartMenuInternet\Nave\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"""
 
-; Capabilities para o Windows 10/11 reconhecer em "Aplicativos Padrão"
-Root: HKCU; Subkey: "Software\Clients\StartMenuInternet\Nave\Capabilities"; ValueType: string; ValueName: "ApplicationDescription"; ValueData: "Nave - Navegador desktop ultra rápido, sem telemetria e com proteção ativa."
+; Capabilities para o Windows 10/11 reconhecer em "Aplicativos PadrÃ£o"
+Root: HKCU; Subkey: "Software\Clients\StartMenuInternet\Nave\Capabilities"; ValueType: string; ValueName: "ApplicationDescription"; ValueData: "Nave - Navegador desktop ultra rÃ¡pido, sem telemetria e com proteÃ§Ã£o ativa."
 Root: HKCU; Subkey: "Software\Clients\StartMenuInternet\Nave\Capabilities"; ValueType: string; ValueName: "ApplicationIcon"; ValueData: "{app}\assets\nave.ico,0"
 Root: HKCU; Subkey: "Software\Clients\StartMenuInternet\Nave\Capabilities"; ValueType: string; ValueName: "ApplicationName"; ValueData: "Nave"
 Root: HKCU; Subkey: "Software\Clients\StartMenuInternet\Nave\Capabilities\URLAssociations"; ValueType: string; ValueName: "http"; ValueData: "NaveHTML"
@@ -60,7 +62,7 @@ Root: HKCU; Subkey: "Software\Clients\StartMenuInternet\Nave\Capabilities\FileAs
 ; Registro do App em RegisteredApplications
 Root: HKCU; Subkey: "Software\RegisteredApplications"; ValueType: string; ValueName: "Nave"; ValueData: "Software\Clients\StartMenuInternet\Nave\Capabilities"; Flags: uninsdeletevalue
 
-; Associação de Classes NaveHTML
+; AssociaÃ§Ã£o de Classes NaveHTML
 Root: HKCU; Subkey: "Software\Classes\NaveHTML"; ValueType: string; ValueData: "Nave HTML Document"; Flags: uninsdeletekey
 Root: HKCU; Subkey: "Software\Classes\NaveHTML\DefaultIcon"; ValueType: string; ValueData: "{app}\assets\nave.ico,0"
 Root: HKCU; Subkey: "Software\Classes\NaveHTML\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""
@@ -84,3 +86,4 @@ Root: HKCU; Subkey: "Software\Policies\Google\Chrome"; ValueType: dword; ValueNa
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
